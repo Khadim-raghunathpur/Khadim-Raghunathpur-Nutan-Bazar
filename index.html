@@ -1,99 +1,540 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khadim's Showroom | Exclusive Footwear Collection</title>
-    <!-- Tailwind CSS for Modern Styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
-        body { font-family: 'Hind Siliguri', sans-serif; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khadim Raghunathpur | Step Out In Style</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#241610;
+    --paper:#EEE3CF;
+    --paper-deep:#E4D5B8;
+    --card:#FFFDF8;
+    --red:#C81E3A;
+    --red-deep:#9E1730;
+    --brass:#9C7A3C;
+    --leather:#2E1B12;
+    --leather-2:#42281B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Work Sans', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .font-display{font-family:'Fraunces', serif;}
+  .font-mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* subtle woven paper texture */
+  .grain{
+    background-image:
+      repeating-linear-gradient(115deg, rgba(36,22,16,0.035) 0px, rgba(36,22,16,0.035) 1px, transparent 1px, transparent 6px);
+  }
+  .leather-grain{
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.04) 0, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0, transparent 50%),
+      repeating-linear-gradient(60deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 5px);
+  }
+
+  /* stitch divider - the signature motif */
+  .stitch{
+    border:none;
+    height:0;
+    border-top:2px dashed rgba(156,122,60,0.55);
+    position:relative;
+  }
+  .stitch-border{
+    border:2px dashed rgba(156,122,60,0.45);
+  }
+  .stitch-top::before{
+    content:"";
+    position:absolute;
+    top:-2px; left:0; right:0;
+    border-top:2px dashed rgba(156,122,60,0.5);
+  }
+
+  /* hang-tag card */
+  .tag-card{
+    background:var(--card);
+    border:2px dashed rgba(156,122,60,0.5);
+    border-radius:4px;
+    position:relative;
+    box-shadow:0 1px 0 rgba(36,22,16,0.04);
+    transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .tag-card:hover{
+    transform:translateY(-6px) rotate(-0.4deg);
+    box-shadow:0 18px 30px -12px rgba(36,22,16,0.28);
+    border-color:rgba(200,30,58,0.55);
+  }
+  .punch-hole{
+    position:absolute;
+    top:14px; left:14px;
+    width:16px; height:16px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px dashed rgba(156,122,60,0.6);
+    z-index:10;
+  }
+  .price-tag{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:-0.02em;
+  }
+
+  .filter-btn{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  .filter-btn.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+
+  .nav-logo{
+    font-family:'Fraunces', serif;
+    font-weight:900;
+    letter-spacing:0.02em;
+  }
+
+  .stamp{
+    transform:rotate(-6deg);
+  }
+
+  .footer-receipt{
+    background:var(--leather);
+    color:#D9C9AE;
+  }
+  .receipt-edge{
+    background-image: linear-gradient(135deg, var(--paper) 25%, transparent 25%), linear-gradient(225deg, var(--paper) 25%, transparent 25%);
+    background-size: 16px 16px;
+    background-position: 0 0;
+    height:16px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+
+  /* signature 3D shoe */
+  .hero-shoe-3d{
+    position:absolute;
+    right:2%;
+    bottom:-6%;
+    width:260px;
+    max-width:34vw;
+    perspective:900px;
+    z-index:1;
+    opacity:0.9;
+    pointer-events:none;
+  }
+  .shoe-3d-svg{
+    width:100%;
+    height:auto;
+    filter:drop-shadow(0 20px 25px rgba(0,0,0,0.35));
+    animation: shoeTurntable 7s ease-in-out infinite;
+    transform-style:preserve-3d;
+  }
+  @keyframes shoeTurntable{
+    0%,100%{ transform: rotateY(-22deg) rotateX(4deg); }
+    50%{ transform: rotateY(22deg) rotateX(4deg); }
+  }
+
+  /* interactive 3D tilt on product cards (JS-driven) */
+  .tag-card{ transform-style:preserve-3d; will-change:transform; }
+</style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="grain">
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="text-2xl font-bold text-red-600 tracking-wide">KHADIM'S</div>
-            <!-- হোয়াটসঅ্যাপ নম্বর আপডেট করা হয়েছে -->
-            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-2 transition duration-300">
-                <i class="fab fa-whatsapp text-lg"></i> হোয়াটসঅ্যাপ চ্যাট
-            </a>
+  <!-- NAV -->
+  <nav class="bg-[var(--card)]/95 backdrop-blur-md sticky top-0 z-50 border-b-2" style="border-color:rgba(156,122,60,0.35)">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
+      <div class="nav-logo text-2xl md:text-3xl" style="color:var(--red)">KHADIM</div>
+      <a href="https://wa.me/916295777518" target="_blank"
+         class="bg-[var(--red)] hover:bg-[var(--red-deep)] text-white px-5 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 transition-all duration-300 shadow-md hover:-translate-y-0.5">
+        <i class="fab fa-whatsapp text-lg"></i> Chat on WhatsApp
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="relative overflow-hidden leather-grain" style="background:var(--leather);">
+    <div class="absolute inset-0" style="background:radial-gradient(circle at 75% 15%, rgba(200,30,58,0.18), transparent 55%);"></div>
+    <div class="max-w-6xl mx-auto px-5 pt-20 pb-24 relative z-10 grid md:grid-cols-[1.3fr_1fr] gap-10 items-center">
+      <div>
+        <div class="flex flex-wrap items-center gap-3 mb-1">
+          <span class="stamp inline-block font-mono text-xs uppercase tracking-widest border-2 px-3 py-1.5 rounded" style="color:#E7B84E; border-color:#E7B84E;">
+            &#9679; Official Franchise Store
+          </span>
+          <span class="font-mono text-xs text-[#D9C9AE] flex items-center gap-1">
+            <i class="fas fa-star" style="color:#E7B84E"></i> 4.6 · 306 Google reviews
+          </span>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="bg-gradient-to-r from-slate-900 to-red-900 text-white py-16 px-4 text-center">
-        <div class="max-w-3xl mx-auto">
-            <span class="bg-red-600 text-xs font-bold uppercase px-3 py-1 rounded-full">Official Franchise Store</span>
-            <h1 class="text-4xl md:text-5xl font-bold mt-4 mb-2">নতুন ট্রেন্ডের সেরা কালেকশন</h1>
-            <p class="text-slate-300 text-lg mb-6">স্টাইল, কমফোর্ট আর স্থায়িত্বের সেরা মেলবন্ধন — এখন রঘুনাথপুরে।</p>
+        <h1 class="font-display text-white text-5xl md:text-7xl leading-[0.98] mt-6 mb-6">
+          Step out<br>in <span class="italic" style="color:#E7B84E;">style.</span>
+        </h1>
+        <p class="text-[#D9C9AE] text-lg max-w-md mb-8 leading-relaxed">
+          Genuine leather, everyday comfort, and the season's sharpest looks —
+          fitted and boxed right here in Raghunathpur.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#catalog" class="bg-[var(--red)] hover:bg-[var(--red-deep)] text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 shadow-lg">
+            Browse the Catalog
+          </a>
+          <a href="https://wa.me/916295777518" target="_blank" class="border-2 border-[#D9C9AE]/40 text-[#D9C9AE] hover:border-[#D9C9AE] px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300">
+            Ask About Sizes
+          </a>
         </div>
-    </header>
-
-    <!-- Product Grid (Digital Catalog) -->
-    <section class="max-w-7xl mx-auto px-4 py-12">
-        <h2 class="text-2xl font-bold mb-8 text-center border-b pb-4">আমাদের ট্রেন্ডিং কালেকশন</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-            <!-- Product 1 -->
-            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 hover:shadow-xl transition duration-300">
-                <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500" alt="Formal Shoe" class="w-full h-56 object-cover">
-                <div class="p-4">
-                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">British Walkers</span>
-                    <h3 class="text-lg font-bold text-slate-800 mt-1">প্রিমিয়াম লেদার ফরমাল</h3>
-                    <div class="flex justify-between items-center mt-3">
-                        <span class="text-xl font-bold text-slate-900">₹১,৪৯৯</span>
-                        <!-- কাস্টম চ্যাট লিংক -->
-                        <a href="https://wa.me/91XXXXXXXXXX?text=নমস্কার, আমি খাদিমে’র প্রিমিয়াম লেদার ফরমাল জুতোটি সম্পর্কে জানতে চাই।" target="_blank" class="bg-slate-900 hover:bg-red-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1">
-                            <i class="fab fa-whatsapp"></i> সাইজ চেক করুন
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 hover:shadow-xl transition duration-300">
-                <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500" alt="Sneaker" class="w-full h-56 object-cover">
-                <div class="p-4">
-                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Khadim's Pro</span>
-                    <h3 class="text-lg font-bold text-slate-800 mt-1">মডার্ন স্পোর্টস স্নিকার্স</h3>
-                    <div class="flex justify-between items-center mt-3">
-                        <span class="text-xl font-bold text-slate-900">₹১,১৯৯</span>
-                        <!-- কাস্টম চ্যাট লিংক -->
-                        <a href="https://wa.me/91XXXXXXXXXX?text=নমস্কার, আমি খাদিমে’র মডার্ন স্পোর্টস স্নিকার্সটি সম্পর্কে জানতে চাই।" target="_blank" class="bg-slate-900 hover:bg-red-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1">
-                            <i class="fab fa-whatsapp"></i> সাইজ চেক করুন
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+      </div>
+    <div class="hero-shoe-3d" aria-hidden="true">
+      <svg class="shoe-3d-svg" viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="shoeBody" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#E23350"/>
+            <stop offset="100%" stop-color="#9E1730"/>
+          </linearGradient>
+          <linearGradient id="shoeSole" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#4A2E23"/>
+            <stop offset="100%" stop-color="#241610"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="120" cy="128" rx="95" ry="8" fill="#000" opacity="0.25"/>
+        <path d="M20,110 Q15,95 35,88 L70,70 Q90,58 120,58 L175,58 Q205,58 215,80 Q222,98 205,108 Q195,114 175,114 L35,114 Q22,114 20,110 Z" fill="url(#shoeSole)"/>
+        <path d="M32,92 Q40,68 75,58 L110,45 Q140,38 165,45 L195,58 Q210,64 208,78 L200,90 Q160,80 120,80 L60,86 Z" fill="url(#shoeBody)"/>
+        <path d="M75,58 L92,44 M95,55 L112,40 M115,52 L132,38" stroke="#E7B84E" stroke-width="3" stroke-dasharray="5 4" stroke-linecap="round"/>
+        <circle cx="90" cy="50" r="3" fill="#E7B84E"/>
+        <circle cx="112" cy="46" r="3" fill="#E7B84E"/>
+        <circle cx="133" cy="43" r="3" fill="#E7B84E"/>
+      </svg>
+    </div>
+      <div class="hidden md:flex justify-center">
+        <div class="tag-card p-5 rotate-3 max-w-[240px]">
+          <div class="punch-hole"></div>
+          <img src="https://lh3.googleusercontent.com/p/AF1QipMtc3EUFd1aeNzpILEDXTwjrE1M8ICg5mQRL9Vp=w500" alt="Khadim Raghunathpur showroom" class="rounded w-full h-48 object-cover mb-4">
+          <p class="font-mono text-xs uppercase tracking-widest" style="color:var(--red)">From Our Showroom</p>
+          <p class="font-display text-lg font-semibold leading-tight">Nutan Bazar, Raghunathpur</p>
+          <p class="text-sm text-[var(--ink)]/60 mt-2 flex items-center gap-1"><i class="fas fa-star" style="color:var(--brass)"></i> 4.6 · 306 reviews</p>
         </div>
-    </section>
+      </div>
+    </div>
+    <div class="stitch mx-5"></div>
+  </header>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-400 py-10 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-                <h4 class="text-white font-bold text-lg mb-3">আমাদের শোরুম</h4>
-                <p class="text-sm leading-relaxed mb-2">আপনার এলাকার বিশ্বস্ত খাদিমে’র অফিসিয়াল ফ্র্যাঞ্চাইজি স্টোর। চলে আসুন আজই আর বেছে নিন আপনার পছন্দের ট্রেন্ডি জুতো।</p>
-                <p class="text-sm text-red-400"><i class="fas fa-clock mr-2"></i>প্রতিদিন সকাল ১০:০০ - রাত ৯:০০ পর্যন্ত খোলা</p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold text-lg mb-3">যোগাযোগ ও ঠিকানা</h4>
-                <!-- ঠিকানা ও ফোন নম্বর নিচে আপডেট করা হয়েছে -->
-                <p class="text-sm mb-2"><i class="fas fa-map-marker-alt text-red-500 mr-2"></i> খাদিমে’র শোরুম, নতুন বাজার, রঘুনাথপুর, পুরুলিয়া, পশ্চিমবঙ্গ - ৭২৩১৩৩</p>
-                <p class="text-sm"><i class="fas fa-phone text-green-500 mr-2"></i> ফোন: +৯১ XXXXXXXXXX</p>
-            </div>
+  <!-- FILTER BAR -->
+  <section class="max-w-6xl mx-auto px-5 pt-12 pb-4" id="catalog">
+    <div class="flex items-baseline justify-between flex-wrap gap-4 mb-8">
+      <h2 class="font-display text-3xl md:text-4xl">The Collection</h2>
+      <p class="font-mono text-xs uppercase tracking-widest" style="color:var(--brass)">Sorted by section, not by algorithm</p>
+    </div>
+    <div class="flex flex-wrap gap-2.5 mb-10">
+      <button onclick="filterSection('all', this)" class="filter-btn active px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300" style="border-color:var(--ink)">All</button>
+      <button onclick="filterSection('men', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Men's</button>
+      <button onclick="filterSection('women', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Women's</button>
+      <button onclick="filterSection('kids', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Kids'</button>
+      <button onclick="filterSection('accessories', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Accessories</button>
+    </div>
+  </section>
+
+  <!-- CATALOG GRID -->
+  <section class="max-w-6xl mx-auto px-5 pb-24">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="catalog-grid">
+
+      <div class="product-card tag-card p-4" data-category="men">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipOkj_cXgT6IHs1i_SyeXdzrYEG43eENSAIj2yVB=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">British Walkers · Men's Formal</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Premium Leather Formal</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹1,499</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Premium Leather Formal Shoes at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
         </div>
-        <div class="text-center text-xs mt-8 pt-6 border-t border-slate-900">
-            &copy; 2026 Khadim's Raghunathpur. All Rights Reserved.
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="men">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipN0ZKkmzUtMSb5wplUvmEJPTVwXxZPna1LvC-UH=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Pro · Men's Sports</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Modern Sports Sneakers</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹1,199</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Modern Sports Sneakers at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
         </div>
-    </footer>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="men">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipM1I7PgvvLRY42eNXXlsJE5NfgZpL9fZ6D-E62O=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Casuals · Men's</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Everyday Canvas Loafers</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹899</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Everyday Canvas Loafers at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="women">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipOERXicR1d4BDS2uDTVSTtueppYYJMnw1-nauMm=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Cleo · Women's Heels</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Stylish Party Heels</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹999</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Stylish Party Heels at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="women">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipOdxqe45RZLUUAyfoPMlhBhsPnTsqruARLkyM-U=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Cleo · Women's Ethnic</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Embroidered Ethnic Flats</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹799</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Embroidered Ethnic Flats at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="kids">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipPuZnbcocwUem6Z6SS1gSF6XOHBoUh4xks4J2Ac=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Pedro · Kids'</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Durable School Shoes</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹599</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Kids Durable School Shoes at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="kids">
+        <div class="punch-hole"></div>
+        <img src="https://lh3.googleusercontent.com/p/AF1QipMTSDIF2HqYQ8SPuHxO-W1ENgNqhLVJA0rtLVRr=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Pedro · Kids' Sports</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Bouncy Play Sneakers</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹649</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Bouncy Play Sneakers at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="accessories">
+        <div class="punch-hole"></div>
+        <img src="https://images.unsplash.com/photo-1624222247344-550fb8ecf78d?w=600" alt="Leather Belt" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Leather · Accessories</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Genuine Leather Belt</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹449</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking availability for the Genuine Leather Belt at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+      <div class="product-card tag-card p-4" data-category="accessories">
+        <div class="punch-hole"></div>
+        <img src="https://picsum.photos/seed/khadimwallet/600/450" alt="Leather Wallet" class="w-full h-56 object-cover rounded mb-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Leather · Accessories</p>
+        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Classic Bifold Wallet</h3>
+        <div class="flex justify-between items-center">
+          <span class="price-tag text-2xl font-semibold">₹349</span>
+          <a href="https://wa.me/916295777518?text=Hello! I am checking availability for the Classic Bifold Wallet at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
+            <i class="fab fa-whatsapp"></i> Check Size
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY US STRIP -->
+  <section class="border-y-2" style="border-color:rgba(156,122,60,0.35); background:var(--paper-deep);">
+    <div class="max-w-6xl mx-auto px-5 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+      <div>
+        <i class="fas fa-certificate text-2xl mb-2" style="color:var(--red)"></i>
+        <p class="font-display text-lg font-semibold">100% Original Brand</p>
+        <p class="text-sm text-[var(--ink)]/70">Every pair sourced straight from Khadim.</p>
+      </div>
+      <div>
+        <i class="fas fa-bolt text-2xl mb-2" style="color:var(--red)"></i>
+        <p class="font-display text-lg font-semibold">Fresh Arrivals Weekly</p>
+        <p class="text-sm text-[var(--ink)]/70">New styles land before the season changes.</p>
+      </div>
+      <div>
+        <i class="fab fa-whatsapp text-2xl mb-2" style="color:var(--red)"></i>
+        <p class="font-display text-lg font-semibold">Size Check on WhatsApp</p>
+        <p class="text-sm text-[var(--ink)]/70">Message us before you make the trip.</p>
+      </div>
+      <div>
+        <i class="fas fa-wheelchair text-2xl mb-2" style="color:var(--red)"></i>
+        <p class="font-display text-lg font-semibold">Accessible Store</p>
+        <p class="text-sm text-[var(--ink)]/70">Wheelchair-accessible entrance, seating & restroom.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REAL SHOWROOM GALLERY -->
+  <section class="max-w-6xl mx-auto px-5 py-16">
+    <div class="flex items-baseline justify-between flex-wrap gap-4 mb-8">
+      <h2 class="font-display text-3xl md:text-4xl">Inside the Showroom</h2>
+      <p class="font-mono text-xs uppercase tracking-widest" style="color:var(--brass)">Straight from our Google listing</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipMtc3EUFd1aeNzpILEDXTwjrE1M8ICg5mQRL9Vp=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipOkj_cXgT6IHs1i_SyeXdzrYEG43eENSAIj2yVB=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipN0ZKkmzUtMSb5wplUvmEJPTVwXxZPna1LvC-UH=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipM1I7PgvvLRY42eNXXlsJE5NfgZpL9fZ6D-E62O=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipOERXicR1d4BDS2uDTVSTtueppYYJMnw1-nauMm=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://img.magicpin.com/8370521_store_images_1.jpg" alt="Khadim Raghunathpur store photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://img.magicpin.com/8370521_store_images_2.jpg" alt="Khadim Raghunathpur store photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://img.magicpin.com/8370521_store_images_3.jpg" alt="Khadim Raghunathpur store photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://img.magicpin.com/8370521_store_images_4.jpg" alt="Khadim Raghunathpur store photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://img.magicpin.com/8370521_store_images_5.jpg" alt="Khadim Raghunathpur store photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipOdxqe45RZLUUAyfoPMlhBhsPnTsqruARLkyM-U=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipPuZnbcocwUem6Z6SS1gSF6XOHBoUh4xks4J2Ac=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipMTSDIF2HqYQ8SPuHxO-W1ENgNqhLVJA0rtLVRr=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/p/AF1QipM7RfXXhvu-JY1_Sjfn6yDL_ZLRjh8LmGxp-fI-=w400" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=1MJ6XyHOyzUsG_BWQz5Vag&cb_client=search.gws-prod.gps&w=400&h=300&yaw=336.38638&pitch=0&thumbfov=100" alt="Khadim Raghunathpur storefront street view" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/W03bfK11e5mrD-UZy4aG_sYUwewWc9NBLOb6zSskAS4d1dgnFNuOh8HB3hLFVzqx_C7FZmN68I6kEEM71ei0ERTirqkBwD-HpSckIfVCMw=w400-rw" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+      <div class="tag-card p-2 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/7bmWMVrePW2u8sCCfScYhG5LQ5c1OAPhQ-TaMRmIlNeX54RkUXGc09covkZ4G4HR0ILrOeoJPSJyTGpbcB1T9gLfKc87E1Dbt5DkkIflDA=w400-rw" alt="Khadim Raghunathpur showroom photo" class="w-full h-36 object-cover rounded">
+      </div>
+    </div>
+  </section>
+
+  <!-- FIND US ONLINE -->
+  <section class="border-y-2" style="border-color:rgba(156,122,60,0.35); background:var(--paper-deep);">
+    <div class="max-w-6xl mx-auto px-5 py-14">
+      <div class="text-center mb-10">
+        <h2 class="font-display text-3xl md:text-4xl mb-2">Find Us Online</h2>
+        <p class="text-sm text-[var(--ink)]/70">Check reviews, photos & directions across the web</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <a href="https://wa.me/916295777518" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
+          <i class="fab fa-whatsapp text-3xl" style="color:#3fae5a"></i>
+          <span class="font-mono text-xs uppercase tracking-widest">WhatsApp</span>
+        </a>
+        <a href="https://share.google/NC6ON1q5MDcgxjGOj" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
+          <i class="fas fa-store text-3xl" style="color:var(--red)"></i>
+          <span class="font-mono text-xs uppercase tracking-widest">Business Page</span>
+        </a>
+        <a href="https://share.google/Q5oeGfdG5jfXvF0XN" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
+          <i class="fab fa-instagram text-3xl" style="color:#C13584"></i>
+          <span class="font-mono text-xs uppercase tracking-widest">Instagram</span>
+        </a>
+        <a href="https://share.google/hqorarfACOIgadwZ8" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
+          <i class="fas fa-magnifying-glass-location text-3xl" style="color:var(--brass)"></i>
+          <span class="font-mono text-xs uppercase tracking-widest">Justdial</span>
+        </a>
+      </div>
+      <p class="text-center mt-6">
+        <a href="https://share.google/b15lS8c6QBr2jHtvs" target="_blank" class="font-mono text-xs uppercase tracking-widest underline" style="color:var(--red)">View us on magicpin →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER (receipt style) -->
+  <footer class="footer-receipt leather-grain">
+    <div class="max-w-6xl mx-auto px-5 py-14 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div>
+        <p class="font-display text-2xl font-semibold text-white mb-3">Khadim Raghunathpur</p>
+        <p class="text-sm leading-relaxed mb-4 max-w-sm">Your neighbourhood's official franchise store — curated sections for the whole family, fitted and boxed on the spot.</p>
+        <p class="font-mono text-xs uppercase tracking-widest flex items-center gap-2" style="color:#E7B84E"><i class="fas fa-clock"></i> Open Daily · 8:30 AM – 9:30 PM</p>
+      </div>
+      <div class="font-mono text-sm">
+        <p class="uppercase tracking-widest text-xs mb-3" style="color:#E7B84E">Contact & Location</p>
+        <p class="mb-3 flex items-start gap-2.5"><i class="fas fa-map-marker-alt mt-1" style="color:var(--red)"></i> Nutan Bazar, Raghunathpur, Purulia, West Bengal – 723133</p>
+        <p class="flex items-center gap-2.5"><i class="fas fa-phone" style="color:#3fae5a"></i> +91 62957 77518</p>
+      </div>
+    </div>
+    <div class="receipt-edge"></div>
+    <div class="text-center text-xs py-5 font-mono tracking-wider" style="color:#8a7660">
+      &copy; 2026 KHADIM RAGHUNATHPUR · ALL RIGHTS RESERVED
+    </div>
+  </footer>
+
+  <script>
+    function filterSection(category, btn){
+      document.querySelectorAll('.product-card').forEach(card=>{
+        card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+      });
+      document.querySelectorAll('.filter-btn').forEach(b=>{
+        b.classList.remove('active');
+        b.style.background = 'var(--card)';
+        b.style.color = 'var(--ink)';
+      });
+      btn.classList.add('active');
+      btn.style.background = 'var(--ink)';
+      btn.style.color = 'var(--paper)';
+    }
+
+    // Live 3D tilt effect on product cards (mouse-follow)
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const midX = rect.width / 2;
+        const midY = rect.height / 2;
+        const rotateY = ((x - midX) / midX) * 8;
+        const rotateX = ((midY - y) / midY) * 8;
+        card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  </script>
 
 </body>
 </html>
