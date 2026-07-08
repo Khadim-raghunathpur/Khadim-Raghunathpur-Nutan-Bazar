@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khadim's Showroom | Exclusive Footwear Collection</title>
+    <!-- Tailwind CSS for Modern Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-2xl font-bold text-red-600 tracking-wide">KHADIM'S</div>
+            <!-- হোয়াটসঅ্যাপ নম্বর আপডেট করা হয়েছে -->
+            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-2 transition duration-300">
+                <i class="fab fa-whatsapp text-lg"></i> হোয়াটসঅ্যাপ চ্যাট
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-r from-slate-900 to-red-900 text-white py-16 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="bg-red-600 text-xs font-bold uppercase px-3 py-1 rounded-full">Official Franchise Store</span>
+            <h1 class="text-4xl md:text-5xl font-bold mt-4 mb-2">নতুন ট্রেন্ডের সেরা কালেকশন</h1>
+            <p class="text-slate-300 text-lg mb-6">স্টাইল, কমফোর্ট আর স্থায়িত্বের সেরা মেলবন্ধন — এখন রঘুনাথপুরে।</p>
+        </div>
+    </header>
+
+    <!-- Product Grid (Digital Catalog) -->
+    <section class="max-w-7xl mx-auto px-4 py-12">
+        <h2 class="text-2xl font-bold mb-8 text-center border-b pb-4">আমাদের ট্রেন্ডিং কালেকশন</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
+            <!-- Product 1 -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 hover:shadow-xl transition duration-300">
+                <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500" alt="Formal Shoe" class="w-full h-56 object-cover">
+                <div class="p-4">
+                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">British Walkers</span>
+                    <h3 class="text-lg font-bold text-slate-800 mt-1">প্রিমিয়াম লেদার ফরমাল</h3>
+                    <div class="flex justify-between items-center mt-3">
+                        <span class="text-xl font-bold text-slate-900">₹১,৪৯৯</span>
+                        <!-- কাস্টম চ্যাট লিংক -->
+                        <a href="https://wa.me/91XXXXXXXXXX?text=নমস্কার, আমি খাদিমে’র প্রিমিয়াম লেদার ফরমাল জুতোটি সম্পর্কে জানতে চাই।" target="_blank" class="bg-slate-900 hover:bg-red-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1">
+                            <i class="fab fa-whatsapp"></i> সাইজ চেক করুন
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 hover:shadow-xl transition duration-300">
+                <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500" alt="Sneaker" class="w-full h-56 object-cover">
+                <div class="p-4">
+                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Khadim's Pro</span>
+                    <h3 class="text-lg font-bold text-slate-800 mt-1">মডার্ন স্পোর্টস স্নিকার্স</h3>
+                    <div class="flex justify-between items-center mt-3">
+                        <span class="text-xl font-bold text-slate-900">₹১,১৯৯</span>
+                        <!-- কাস্টম চ্যাট লিংক -->
+                        <a href="https://wa.me/91XXXXXXXXXX?text=নমস্কার, আমি খাদিমে’র মডার্ন স্পোর্টস স্নিকার্সটি সম্পর্কে জানতে চাই।" target="_blank" class="bg-slate-900 hover:bg-red-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1">
+                            <i class="fab fa-whatsapp"></i> সাইজ চেক করুন
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="text-white font-bold text-lg mb-3">আমাদের শোরুম</h4>
+                <p class="text-sm leading-relaxed mb-2">আপনার এলাকার বিশ্বস্ত খাদিমে’র অফিসিয়াল ফ্র্যাঞ্চাইজি স্টোর। চলে আসুন আজই আর বেছে নিন আপনার পছন্দের ট্রেন্ডি জুতো।</p>
+                <p class="text-sm text-red-400"><i class="fas fa-clock mr-2"></i>প্রতিদিন সকাল ১০:০০ - রাত ৯:০০ পর্যন্ত খোলা</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg mb-3">যোগাযোগ ও ঠিকানা</h4>
+                <!-- ঠিকানা ও ফোন নম্বর নিচে আপডেট করা হয়েছে -->
+                <p class="text-sm mb-2"><i class="fas fa-map-marker-alt text-red-500 mr-2"></i> খাদিমে’র শোরুম, নতুন বাজার, রঘুনাথপুর, পুরুলিয়া, পশ্চিমবঙ্গ - ৭২৩১৩৩</p>
+                <p class="text-sm"><i class="fas fa-phone text-green-500 mr-2"></i> ফোন: +৯১ XXXXXXXXXX</p>
+            </div>
+        </div>
+        <div class="text-center text-xs mt-8 pt-6 border-t border-slate-900">
+            &copy; 2026 Khadim's Raghunathpur. All Rights Reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
