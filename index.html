@@ -65,8 +65,8 @@
   </section>
 
   <script>
-    // তোমার আসল গুগল শিট আইডিটি এখানে অটোমেটিক বসানো হয়েছে
-    const SHEET_ID = '1XRyptnDATPP8VbDhGu5EkkfaWVnjr05-'; 
+    // তোমার দেওয়া নতুন গুগল শিটের আইডিটি এখানে বসানো হয়েছে
+    const SHEET_ID = '1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU'; 
     const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Sheet1&tq=select%20*`;
 
     let allProducts = [];
@@ -86,6 +86,7 @@
           const mrp = row.c[7] ? row.c[7].v : 0;
           const stockQty = row.c[8] ? row.c[8].v : 0;
 
+          // হেডার বা অবৈধ কোড ফিল্টার
           if (!item7Code || item7Code === "ITEM 7" || item7Code.toString().length < 5) return;
 
           allProducts.push({
@@ -100,7 +101,7 @@
 
         renderCatalog(allProducts);
       }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please click Share in Google Sheets and select \"Anyone with the link\".</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please make sure the sheet Share setting is set to \"Anyone with the link\".</p>';
       });
 
     function renderCatalog(products) {
