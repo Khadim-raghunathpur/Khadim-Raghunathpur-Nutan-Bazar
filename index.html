@@ -65,9 +65,9 @@
   </section>
 
   <script>
-    // !!! এইখানে তোমার গুগল শিটের আইডি বসাবে !!!
-    const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE'; 
-    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Sheet1&range=A2:K1000`;
+    // তোমার আসল গুগল শিট আইডিটি এখানে অটোমেটিক বসানো হয়েছে
+    const SHEET_ID = '1XRyptnDATPP8VbDhGu5EkkfaWVnjr05-'; 
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Sheet1&tq=select%20*`;
 
     let allProducts = [];
     let currentFilter = 'all';
@@ -86,7 +86,7 @@
           const mrp = row.c[7] ? row.c[7].v : 0;
           const stockQty = row.c[8] ? row.c[8].v : 0;
 
-          if (!item7Code || item7Code.toString().length < 5) return;
+          if (!item7Code || item7Code === "ITEM 7" || item7Code.toString().length < 5) return;
 
           allProducts.push({
             code: item7Code,
@@ -100,7 +100,7 @@
 
         renderCatalog(allProducts);
       }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard.</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please click Share in Google Sheets and select \"Anyone with the link\".</p>';
       });
 
     function renderCatalog(products) {
@@ -145,7 +145,7 @@
       const searchVal = document.getElementById('search-input').value.toLowerCase();
       const filtered = allProducts.filter(p => {
         const matchesSearch = `${p.category} ${p.brand} ${p.code}`.toLowerCase().includes(searchVal);
-        const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && p.category.toUpperCase().includes('BOYS'));
+        const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && (p.category.toUpperCase().includes('BOYS') || p.category.toUpperCase().includes('KIDS') || p.category.toUpperCase().includes('GIRLS')));
         return matchesSearch && matchesFilter;
       });
       renderCatalog(filtered);
