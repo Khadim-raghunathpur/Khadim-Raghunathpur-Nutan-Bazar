@@ -65,7 +65,6 @@
   </section>
 
   <script>
-    // এখানে তোমার একদম সঠিক শিট আইডিটি বসানো হলো
     const SHEET_ID = '1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU'; 
     const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=sheet1`;
 
@@ -90,34 +89,24 @@
       .then(text => {
         const rows = parseCSV(text);
         
-        let headerRow = rows.find(r => r.includes("Item Code") || r.includes("Item Name"));
-        if (!headerRow) {
-          headerRow = ["", "Parent Group Name", "Item Code", "", "Item Name", "", "", "", "", "Quantity", "", "", "Rate"];
-        }
-
-        const idxGroup = headerRow.indexOf("Parent Group Name");
-        const idxCode = headerRow.indexOf("Item Code");
-        const idxName = headerRow.indexOf("Item Name");
-        const idxQty = headerRow.indexOf("Quantity");
-        const idxRate = headerRow.indexOf("Rate");
-
         let lastParentGroup = 'KHADIMS';
 
         rows.forEach(row => {
-          const itemCode = row[idxCode] || '';
-          const itemName = row[idxName] || '';
-          const currentGroup = row[idxGroup] || '';
-          const stockQty = parseInt(row[idxQty]) || 0;
-          const mrp = row[idxRate] || '0';
+          // কলামের নাম খোঁজার ঝামেলা বাদ দিয়ে সরাসরি ইনডেক্স পজিশন ম্যাপিং (তোমার ফাইনাল শিট অনুযায়ী)
+          const itemCode = row[2] || '';  // Column C: Item Code
+          const itemName = row[4] || '';  // Column E: Item Name
+          const currentGroup = row[1] || ''; // Column B: Parent Group Name
+          const stockQty = parseInt(row[9]) || 0; // Column J: Quantity
+          const mrp = row[12] || '0'; // Column M: Rate
 
-          if (currentGroup && currentGroup.replace(/[^a-zA-Z\s]/g, '').trim() !== '') {
-            if (!currentGroup.includes("Item") && !currentGroup.includes("Parent")) {
-              lastParentGroup = currentGroup;
-            }
+          if (currentGroup && currentGroup.trim() !== '' && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
+            lastParentGroup = currentGroup;
           }
 
-          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || stockQty <= 0) return;
+          // ভ্যালিডেশন ফিল্টার
+          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || itemCode.includes("ITEM 7") || stockQty <= 0) return;
 
+          // ৭ ডিজিটের ক্লিন কোড বের করা ছবি লোডের জন্য
           let cleanCode = itemCode.replace(/[^0-9]/g, '');
           let fullCode = cleanCode;
           if (cleanCode.length > 7) {
@@ -138,7 +127,7 @@
 
         renderCatalog(allProducts);
       }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please verify Google Sheet Share settings.</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard.</p>';
       });
 
     function renderCatalog(products) {
@@ -147,7 +136,7 @@
       catalog.innerHTML = '';
       
       if(products.length === 0) {
-        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No matching products found in stock.</p>';
+        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No products found in stock.</p>';
         countLabel.innerText = '0 Items';
         return;
       }
@@ -179,6 +168,7 @@
       });
     }
 
+    // সার্চ ও ফিল্টারিং সিস্টেম
     function searchProducts() {
       const searchVal = document.getElementById('search-input').value.toLowerCase();
       const filtered = allProducts.filter(p => {
