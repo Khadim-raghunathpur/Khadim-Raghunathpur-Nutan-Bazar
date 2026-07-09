@@ -1,193 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khadim Raghunathpur | Step Out In Style</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-  :root { --ink:#241610; --paper:#EEE3CF; --paper-deep:#E4D5B8; --card:#FFFDF8; --red:#C81E3A; }
-  body { font-family:'Work Sans', sans-serif; background:var(--paper); color:var(--ink); }
-  .font-display { font-family:'Fraunces', serif; }
-  .tag-card { background:var(--card); border:2px dashed rgba(156,122,60,0.5); border-radius:4px; transition:all .35s ease; }
-  .tag-card:hover { transform:translateY(-6px); box-shadow:0 18px 30px -12px rgba(36,22,16,0.25); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khadim Footwear Stock Catalog</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #EEE3CF; /* Cream/Beige */
+        }
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
-<body class="bg-[#EEE3CF]">
-
-  <!-- NAV -->
-  <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
-    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
-    <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
-      <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-    </a>
-  </nav>
-
-  <!-- SEARCH & SEARCH FILTERS -->
-  <section class="max-w-6xl mx-auto px-5 pt-10">
-    <div class="bg-[#FFFDF8] p-6 rounded-lg border-2 border-dashed border-amber-800/30 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
-      <div class="w-full md:w-1/2 relative">
-        <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
-        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, boots, sandals, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
-      </div>
-      <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
-        <button onclick="filterType('all', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-[#241610] text-white font-semibold border">ALL</button>
-        <button onclick="filterType('GENTS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">MEN</button>
-        <button onclick="filterType('LADIES', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">WOMEN</button>
-        <button onclick="filterType('KIDS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">KIDS / BOYS</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- LIVE STOCKS FROM EXCEL -->
-  <section class="max-w-6xl mx-auto px-5 py-10">
-    <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
-      <div>
-        <h2 class="font-display text-3xl font-bold">The Collection</h2>
-        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Stock Catalog (Connected with Master Sheet)</p>
-      </div>
-      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Loading items...</span>
-    </div>
-
-    <!-- Container for dynamic products -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
-      <p class="col-span-full text-center py-10 font-mono text-sm">Syncing with Google Sheets...</p>
-    </div>
-  </section>
-
-  <!-- SOCIABLEKIT SHOWROOM GALLERY -->
-  <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
-    <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
-    <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
-    <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
-  </section>
-
-  <script>
-    const SHEET_ID = '1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU'; 
-    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=sheet1`;
-
-    let allProducts = [];
-    let currentFilter = 'all';
-
-    function parseCSV(text) {
-      let lines = text.split('\n');
-      let result = [];
-      for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trim();
-        if (!line) continue;
-        let row = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
-        row = row.map(val => val.replace(/^"|"$/g, '').trim());
-        result.push(row);
-      }
-      return result;
-    }
-
-    fetch(URL)
-      .then(res => res.text())
-      .then(text => {
-        const rows = parseCSV(text);
+<body>
+    <div class="container mx-auto p-5">
+        <h1 class="text-center text-4xl font-bold text-[#241610] mb-5">Khadim Footwear Stock Catalog</h1>
+        <div class="mb-5 flex justify-center">
+            <input type="text" id="search" placeholder="Search..." class="border rounded p-2 w-1/2" />
+        </div>
+        <div class="flex justify-center mb-5">
+            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('ALL')">ALL</button>
+            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('GENTS')">MEN</button>
+            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('LADIES')">WOMEN</button>
+            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('KIDS')">KIDS</button>
+        </div>
+        <div id="product-cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
         
-        let lastParentGroup = 'KHADIMS';
+        <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
+        <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
+    </div>
 
-        rows.forEach(row => {
-          // কলামের নাম খোঁজার ঝামেলা বাদ দিয়ে সরাসরি ইনডেক্স পজিশন ম্যাপিং (তোমার ফাইনাল শিট অনুযায়ী)
-          const itemCode = row[2] || '';  // Column C: Item Code
-          const itemName = row[4] || '';  // Column E: Item Name
-          const currentGroup = row[1] || ''; // Column B: Parent Group Name
-          const stockQty = parseInt(row[9]) || 0; // Column J: Quantity
-          const mrp = row[12] || '0'; // Column M: Rate
+    <script>
+        const googleSheetURL = 'https://docs.google.com/spreadsheets/d/1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU/gviz/tq?tqx=out:csv&sheet=sheet1';
+        let products = [];
+        let lastGroup = '';
 
-          if (currentGroup && currentGroup.trim() !== '' && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
-            lastParentGroup = currentGroup;
-          }
+        async function fetchData() {
+            const response = await fetch(googleSheetURL);
+            const csvData = await response.text();
+            parseCSV(csvData);
+        }
 
-          // ভ্যালিডেশন ফিল্টার
-          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || itemCode.includes("ITEM 7") || stockQty <= 0) return;
+        function parseCSV(data) {
+            const rows = data.split('\n');
+            rows.forEach((row, index) => {
+                if (index === 0 || row.trim() === '') return; // Skip header and empty rows
+                const columns = row.split(',');
+                const parentGroup = columns[1] || lastGroup; // Carry over the last non-empty Group Name
+                lastGroup = columns[1] || lastGroup; // Update lastGroup
 
-          // ৭ ডিজিটের ক্লিন কোড বের করা ছবি লোডের জন্য
-          let cleanCode = itemCode.replace(/[^0-9]/g, '');
-          let fullCode = cleanCode;
-          if (cleanCode.length > 7) {
-            cleanCode = cleanCode.substring(0, 7);
-          }
+                const itemCode = columns[2];
+                const itemName = columns[4];
+                const quantity = parseInt(columns[8], 10);
+                const price = parseFloat(columns[11]);
 
-          if (cleanCode.length >= 5) {
-            allProducts.push({
-              code: cleanCode,
-              fullCode: fullCode,
-              category: itemName,
-              group: lastParentGroup,
-              price: mrp,
-              stock: stockQty
+                if (itemCode && quantity > 0) {
+                    products.push({ parentGroup, itemCode, itemName, quantity, price });
+                }
             });
-          }
+
+            displayProducts(products);
+        }
+
+        function displayProducts(products) {
+            const productCards = document.getElementById('product-cards');
+            productCards.innerHTML = '';
+
+            products.forEach(product => {
+                const imageUrl = `https://khadims.com/images/products/${product.itemCode.slice(0, 7)}.jpg`;
+                const card = `
+                    <div class="card bg-white rounded-lg shadow-lg p-5">
+                        <img src="${imageUrl}" alt="${product.itemName}" class="w-full h-32 object-cover rounded mb-3" onerror="this.onerror=null; this.src='https://via.placeholder.com/150';" />
+                        <h2 class="text-[#241610] font-semibold">${product.parentGroup}</h2>
+                        <h3 class="text-[#241610]">${product.itemName}</h3>
+                        <p class="text-[#241610]">Item Code: ${product.itemCode}</p>
+                        <p class="text-[#C81E3A] font-bold">Price: ₹${product.price.toFixed(2)}</p>
+                        <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mt-2" onclick="whatsappSizes('${product.itemName}')">WhatsApp for Sizes</button>
+                    </div>
+                `;
+                productCards.innerHTML += card;
+            });
+        }
+
+        function filterProducts(category) {
+            const filteredProducts = category === 'ALL' ? products : products.filter(product => product.parentGroup === category);
+            displayProducts(filteredProducts);
+        }
+
+        function whatsappSizes(itemName) {
+            const whatsappNumber = 'YOUR_WHATSAPP_NUMBER'; // Replace with your WhatsApp number
+            const message = `Hello, I would like to know the available sizes for ${itemName}.`;
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        document.getElementById('search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filteredProducts = products.filter(product =>
+                product.itemName.toLowerCase().includes(searchTerm) ||
+                product.itemCode.toLowerCase().includes(searchTerm) ||
+                product.parentGroup.toLowerCase().includes(searchTerm)
+            );
+            displayProducts(filteredProducts);
         });
 
-        renderCatalog(allProducts);
-      }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard.</p>';
-      });
-
-    function renderCatalog(products) {
-      const catalog = document.getElementById('excel-catalog');
-      const countLabel = document.getElementById('product-count');
-      catalog.innerHTML = '';
-      
-      if(products.length === 0) {
-        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No products found in stock.</p>';
-        countLabel.innerText = '0 Items';
-        return;
-      }
-
-      countLabel.innerText = `${products.length} Items`;
-
-      products.forEach(p => {
-        const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
-        const waText = encodeURIComponent(`Hello! I want to check size availability for ${p.category} (Code: ${p.fullCode}) at Khadim Raghunathpur.`);
-
-        catalog.innerHTML += `
-          <div class="tag-card p-4 flex flex-col justify-between product-item">
-            <div>
-              <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
-                <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
-              </div>
-              <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.group}</span>
-              <h3 class="font-display font-bold text-sm mt-2 leading-tight">${p.category}</h3>
-              <p class="text-xs text-gray-500 font-mono mt-1">Code: ${p.fullCode}</p>
-            </div>
-            <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-amber-800/20">
-              <span class="font-mono text-base font-bold text-[#C81E3A]">₹${p.price}</span>
-              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[10px] px-2.5 py-2 rounded-full flex items-center gap-1 font-semibold">
-                <i class="fab fa-whatsapp text-sm"></i> Sizes?
-              </a>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    // সার্চ ও ফিল্টারিং সিস্টেম
-    function searchProducts() {
-      const searchVal = document.getElementById('search-input').value.toLowerCase();
-      const filtered = allProducts.filter(p => {
-        const matchesSearch = `${p.category} ${p.group} ${p.fullCode}`.toLowerCase().includes(searchVal);
-        const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && (p.group.toUpperCase().includes('BOYS') || p.group.toUpperCase().includes('KIDS') || p.group.toUpperCase().includes('GIRLS')));
-        return matchesSearch && matchesFilter;
-      });
-      renderCatalog(filtered);
-    }
-
-    function filterType(type, btn) {
-      currentFilter = type;
-      document.querySelectorAll('#filter-buttons button').forEach(b => {
-        b.classList.remove('bg-[#241610]', 'text-white');
-        b.classList.add('bg-white', 'text-amber-800');
-      });
-      btn.classList.add('bg-[#241610]', 'text-white');
-      searchProducts();
-    }
-  </script>
+        fetchData();
+    </script>
 </body>
 </html>
