@@ -7,486 +7,159 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
-  :root{
-    --ink:#241610;
-    --paper:#EEE3CF;
-    --paper-deep:#E4D5B8;
-    --card:#FFFDF8;
-    --red:#C81E3A;
-    --red-deep:#9E1730;
-    --brass:#9C7A3C;
-    --leather:#2E1B12;
-    --leather-2:#42281B;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    font-family:'Work Sans', sans-serif;
-    background:var(--paper);
-    color:var(--ink);
-  }
-  .font-display{font-family:'Fraunces', serif;}
-  .font-mono{font-family:'IBM Plex Mono', monospace;}
-
-  /* subtle woven paper texture */
-  .grain{
-    background-image:
-      repeating-linear-gradient(115deg, rgba(36,22,16,0.035) 0px, rgba(36,22,16,0.035) 1px, transparent 1px, transparent 6px);
-  }
-  .leather-grain{
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.04) 0, transparent 45%),
-      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0, transparent 50%),
-      repeating-linear-gradient(60deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 5px);
-  }
-
-  /* stitch divider - the signature motif */
-  .stitch{
-    border:none;
-    height:0;
-    border-top:2px dashed rgba(156,122,60,0.55);
-    position:relative;
-  }
-  .stitch-border{
-    border:2px dashed rgba(156,122,60,0.45);
-  }
-  .stitch-top::before{
-    content:"";
-    position:absolute;
-    top:-2px; left:0; right:0;
-    border-top:2px dashed rgba(156,122,60,0.5);
-  }
-
-  /* hang-tag card */
-  .tag-card{
-    background:var(--card);
-    border:2px dashed rgba(156,122,60,0.5);
-    border-radius:4px;
-    position:relative;
-    box-shadow:0 1px 0 rgba(36,22,16,0.04);
-    transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
-  }
-  .tag-card:hover{
-    transform:translateY(-6px) rotate(-0.4deg);
-    box-shadow:0 18px 30px -12px rgba(36,22,16,0.28);
-    border-color:rgba(200,30,58,0.55);
-  }
-  .punch-hole{
-    position:absolute;
-    top:14px; left:14px;
-    width:16px; height:16px;
-    border-radius:50%;
-    background:var(--paper);
-    border:2px dashed rgba(156,122,60,0.6);
-    z-index:10;
-  }
-  .price-tag{
-    font-family:'IBM Plex Mono', monospace;
-    letter-spacing:-0.02em;
-  }
-
-  .filter-btn{
-    font-family:'IBM Plex Mono', monospace;
-    letter-spacing:0.02em;
-  }
-  .filter-btn.active{
-    background:var(--ink);
-    color:var(--paper);
-    border-color:var(--ink);
-  }
-
-  .nav-logo{
-    font-family:'Fraunces', serif;
-    font-weight:900;
-    letter-spacing:0.02em;
-  }
-
-  .stamp{
-    transform:rotate(-6deg);
-  }
-
-  .footer-receipt{
-    background:var(--leather);
-    color:#D9C9AE;
-  }
-  .receipt-edge{
-    background-image: linear-gradient(135deg, var(--paper) 25%, transparent 25%), linear-gradient(225deg, var(--paper) 25%, transparent 25%);
-    background-size: 16px 16px;
-    background-position: 0 0;
-    height:16px;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important; animation:none !important;}
-  }
-
-  /* signature 3D shoe */
-  .hero-shoe-3d{
-    position:absolute;
-    right:2%;
-    bottom:-6%;
-    width:260px;
-    max-width:34vw;
-    perspective:900px;
-    z-index:1;
-    opacity:0.9;
-    pointer-events:none;
-  }
-  .shoe-3d-svg{
-    width:100%;
-    height:auto;
-    filter:drop-shadow(0 20px 25px rgba(0,0,0,0.35));
-    animation: shoeTurntable 7s ease-in-out infinite;
-    transform-style:preserve-3d;
-  }
-  @keyframes shoeTurntable{
-    0%,100%{ transform: rotateY(-22deg) rotateX(4deg); }
-    50%{ transform: rotateY(22deg) rotateX(4deg); }
-  }
-
-  /* interactive 3D tilt on product cards (JS-driven) */
-  .tag-card{ transform-style:preserve-3d; will-change:transform; }
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root { --ink:#241610; --paper:#EEE3CF; --paper-deep:#E4D5B8; --card:#FFFDF8; --red:#C81E3A; }
+  body { font-family:'Work Sans', sans-serif; background:var(--paper); color:var(--ink); }
+  .font-display { font-family:'Fraunces', serif; }
+  .tag-card { background:var(--card); border:2px dashed rgba(156,122,60,0.5); border-radius:4px; transition:all .35s ease; }
+  .tag-card:hover { transform:translateY(-6px); box-shadow:0 18px 30px -12px rgba(36,22,16,0.25); }
 </style>
 </head>
-<body class="grain">
+<body class="bg-[#EEE3CF]">
 
   <!-- NAV -->
-  <nav class="bg-[var(--card)]/95 backdrop-blur-md sticky top-0 z-50 border-b-2" style="border-color:rgba(156,122,60,0.35)">
-    <div class="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
-      <div class="nav-logo text-2xl md:text-3xl" style="color:var(--red)">KHADIM</div>
-      <a href="https://wa.me/916295777518" target="_blank"
-         class="bg-[var(--red)] hover:bg-[var(--red-deep)] text-white px-5 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 transition-all duration-300 shadow-md hover:-translate-y-0.5">
-        <i class="fab fa-whatsapp text-lg"></i> Chat on WhatsApp
-      </a>
-    </div>
+  <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
+    <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
+      <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+    </a>
   </nav>
 
-  <!-- HERO -->
-  <header class="relative overflow-hidden leather-grain" style="background:var(--leather);">
-    <div class="absolute inset-0" style="background:radial-gradient(circle at 75% 15%, rgba(200,30,58,0.18), transparent 55%);"></div>
-    <div class="max-w-6xl mx-auto px-5 pt-20 pb-24 relative z-10 grid md:grid-cols-[1.3fr_1fr] gap-10 items-center">
-      <div>
-        <div class="flex flex-wrap items-center gap-3 mb-1">
-          <span class="stamp inline-block font-mono text-xs uppercase tracking-widest border-2 px-3 py-1.5 rounded" style="color:#E7B84E; border-color:#E7B84E;">
-            &#9679; Official Franchise Store
-          </span>
-          <span class="font-mono text-xs text-[#D9C9AE] flex items-center gap-1">
-            <i class="fas fa-star" style="color:#E7B84E"></i> 4.6 · 306 Google reviews
-          </span>
-        </div>
-        <h1 class="font-display text-white text-5xl md:text-7xl leading-[0.98] mt-6 mb-6">
-          Step out<br>in <span class="italic" style="color:#E7B84E;">style.</span>
-        </h1>
-        <p class="text-[#D9C9AE] text-lg max-w-md mb-8 leading-relaxed">
-          Genuine leather, everyday comfort, and the season's sharpest looks —
-          fitted and boxed right here in Raghunathpur.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <a href="#catalog" class="bg-[var(--red)] hover:bg-[var(--red-deep)] text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 shadow-lg">
-            Browse the Catalog
-          </a>
-          <a href="https://wa.me/916295777518" target="_blank" class="border-2 border-[#D9C9AE]/40 text-[#D9C9AE] hover:border-[#D9C9AE] px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300">
-            Ask About Sizes
-          </a>
-        </div>
+  <!-- SEARCH & SEARCH FILTERS -->
+  <section class="max-w-6xl mx-auto px-5 pt-10">
+    <div class="bg-[#FFFDF8] p-6 rounded-lg border-2 border-dashed border-amber-800/30 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+      <div class="w-full md:w-1/2 relative">
+        <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, boots, sandals, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
       </div>
-    <div class="hero-shoe-3d" aria-hidden="true">
-      <svg class="shoe-3d-svg" viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="shoeBody" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#E23350"/>
-            <stop offset="100%" stop-color="#9E1730"/>
-          </linearGradient>
-          <linearGradient id="shoeSole" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#4A2E23"/>
-            <stop offset="100%" stop-color="#241610"/>
-          </linearGradient>
-        </defs>
-        <ellipse cx="120" cy="128" rx="95" ry="8" fill="#000" opacity="0.25"/>
-        <path d="M20,110 Q15,95 35,88 L70,70 Q90,58 120,58 L175,58 Q205,58 215,80 Q222,98 205,108 Q195,114 175,114 L35,114 Q22,114 20,110 Z" fill="url(#shoeSole)"/>
-        <path d="M32,92 Q40,68 75,58 L110,45 Q140,38 165,45 L195,58 Q210,64 208,78 L200,90 Q160,80 120,80 L60,86 Z" fill="url(#shoeBody)"/>
-        <path d="M75,58 L92,44 M95,55 L112,40 M115,52 L132,38" stroke="#E7B84E" stroke-width="3" stroke-dasharray="5 4" stroke-linecap="round"/>
-        <circle cx="90" cy="50" r="3" fill="#E7B84E"/>
-        <circle cx="112" cy="46" r="3" fill="#E7B84E"/>
-        <circle cx="133" cy="43" r="3" fill="#E7B84E"/>
-      </svg>
-    </div>
-      <div class="hidden md:flex justify-center">
-        <div class="tag-card p-5 rotate-3 max-w-[240px]">
-          <div class="punch-hole"></div>
-          <img src="https://lh3.googleusercontent.com/p/AF1QipMtc3EUFd1aeNzpILEDXTwjrE1M8ICg5mQRL9Vp=w500" alt="Khadim Raghunathpur showroom" class="rounded w-full h-48 object-cover mb-4">
-          <p class="font-mono text-xs uppercase tracking-widest" style="color:var(--red)">From Our Showroom</p>
-          <p class="font-display text-lg font-semibold leading-tight">Nutan Bazar, Raghunathpur</p>
-          <p class="text-sm text-[var(--ink)]/60 mt-2 flex items-center gap-1"><i class="fas fa-star" style="color:var(--brass)"></i> 4.6 · 306 reviews</p>
-        </div>
-      </div>
-    </div>
-    <div class="stitch mx-5"></div>
-  </header>
-
-  <!-- FILTER BAR -->
-  <section class="max-w-6xl mx-auto px-5 pt-12 pb-4" id="catalog">
-    <div class="flex items-baseline justify-between flex-wrap gap-4 mb-8">
-      <h2 class="font-display text-3xl md:text-4xl">The Collection</h2>
-      <p class="font-mono text-xs uppercase tracking-widest" style="color:var(--brass)">Sorted by section, not by algorithm</p>
-    </div>
-    <div class="flex flex-wrap gap-2.5 mb-10">
-      <button onclick="filterSection('all', this)" class="filter-btn active px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300" style="border-color:var(--ink)">All</button>
-      <button onclick="filterSection('men', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Men's</button>
-      <button onclick="filterSection('women', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Women's</button>
-      <button onclick="filterSection('kids', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Kids'</button>
-      <button onclick="filterSection('accessories', this)" class="filter-btn px-5 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 bg-[var(--card)]" style="border-color:rgba(156,122,60,0.5)">Accessories</button>
-    </div>
-  </section>
-
-  <!-- CATALOG GRID -->
-  <section class="max-w-6xl mx-auto px-5 pb-24">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="catalog-grid">
-
-      <div class="product-card tag-card p-4" data-category="men">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipOkj_cXgT6IHs1i_SyeXdzrYEG43eENSAIj2yVB=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">British Walkers · Men's Formal</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Premium Leather Formal</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹1,499</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Premium Leather Formal Shoes at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="men">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipN0ZKkmzUtMSb5wplUvmEJPTVwXxZPna1LvC-UH=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Pro · Men's Sports</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Modern Sports Sneakers</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹1,199</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Modern Sports Sneakers at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="men">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipM1I7PgvvLRY42eNXXlsJE5NfgZpL9fZ6D-E62O=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Casuals · Men's</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Everyday Canvas Loafers</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹899</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Everyday Canvas Loafers at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="women">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipOERXicR1d4BDS2uDTVSTtueppYYJMnw1-nauMm=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Cleo · Women's Heels</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Stylish Party Heels</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹999</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Stylish Party Heels at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="women">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipOdxqe45RZLUUAyfoPMlhBhsPnTsqruARLkyM-U=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Cleo · Women's Ethnic</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Embroidered Ethnic Flats</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹799</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Embroidered Ethnic Flats at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="kids">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipPuZnbcocwUem6Z6SS1gSF6XOHBoUh4xks4J2Ac=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Pedro · Kids'</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Durable School Shoes</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹599</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Kids Durable School Shoes at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="kids">
-        <div class="punch-hole"></div>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipMTSDIF2HqYQ8SPuHxO-W1ENgNqhLVJA0rtLVRr=w600" alt="Khadim Raghunathpur store photo" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Pedro · Kids' Sports</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Bouncy Play Sneakers</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹649</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking size availability for the Bouncy Play Sneakers at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="accessories">
-        <div class="punch-hole"></div>
-        <img src="https://images.unsplash.com/photo-1624222247344-550fb8ecf78d?w=600" alt="Leather Belt" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Leather · Accessories</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Genuine Leather Belt</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹449</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking availability for the Genuine Leather Belt at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-      <div class="product-card tag-card p-4" data-category="accessories">
-        <div class="punch-hole"></div>
-        <img src="https://picsum.photos/seed/khadimwallet/600/450" alt="Leather Wallet" class="w-full h-56 object-cover rounded mb-4">
-        <p class="font-mono text-[11px] uppercase tracking-widest" style="color:var(--red)">Khadim Leather · Accessories</p>
-        <h3 class="font-display text-xl font-semibold mt-1 mb-3">Classic Bifold Wallet</h3>
-        <div class="flex justify-between items-center">
-          <span class="price-tag text-2xl font-semibold">₹349</span>
-          <a href="https://wa.me/916295777518?text=Hello! I am checking availability for the Classic Bifold Wallet at Khadim Raghunathpur." target="_blank" class="bg-[var(--ink)] hover:bg-[var(--red)] text-white text-xs px-4 py-2.5 rounded-full font-semibold transition-all flex items-center gap-1.5">
-            <i class="fab fa-whatsapp"></i> Check Size
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- WHY US STRIP -->
-  <section class="border-y-2" style="border-color:rgba(156,122,60,0.35); background:var(--paper-deep);">
-    <div class="max-w-6xl mx-auto px-5 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-      <div>
-        <i class="fas fa-certificate text-2xl mb-2" style="color:var(--red)"></i>
-        <p class="font-display text-lg font-semibold">100% Original Brand</p>
-        <p class="text-sm text-[var(--ink)]/70">Every pair sourced straight from Khadim.</p>
-      </div>
-      <div>
-        <i class="fas fa-bolt text-2xl mb-2" style="color:var(--red)"></i>
-        <p class="font-display text-lg font-semibold">Fresh Arrivals Weekly</p>
-        <p class="text-sm text-[var(--ink)]/70">New styles land before the season changes.</p>
-      </div>
-      <div>
-        <i class="fab fa-whatsapp text-2xl mb-2" style="color:var(--red)"></i>
-        <p class="font-display text-lg font-semibold">Size Check on WhatsApp</p>
-        <p class="text-sm text-[var(--ink)]/70">Message us before you make the trip.</p>
-      </div>
-      <div>
-        <i class="fas fa-wheelchair text-2xl mb-2" style="color:var(--red)"></i>
-        <p class="font-display text-lg font-semibold">Accessible Store</p>
-        <p class="text-sm text-[var(--ink)]/70">Wheelchair-accessible entrance, seating & restroom.</p>
+      <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
+        <button onclick="filterType('all', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-[#241610] text-white font-semibold border">ALL</button>
+        <button onclick="filterType('GENTS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">MEN</button>
+        <button onclick="filterType('LADIES', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">WOMEN</button>
+        <button onclick="filterType('KIDS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">KIDS / BOYS</button>
       </div>
     </div>
   </section>
 
-  <!-- REAL SHOWROOM GALLERY (AUTOMATED WITH SOCIABLEKIT) -->
-  <section class="max-w-6xl mx-auto px-5 py-16">
-    <div class="flex items-baseline justify-between flex-wrap gap-4 mb-8">
-      <h2 class="font-display text-3xl md:text-4xl">Inside the Showroom</h2>
-      <p class="font-mono text-xs uppercase tracking-widest" style="color:var(--brass)">Straight from our Google listing</p>
+  <!-- LIVE STOCKS FROM EXCEL -->
+  <section class="max-w-6xl mx-auto px-5 py-10">
+    <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
+      <div>
+        <h2 class="font-display text-3xl font-bold">The Collection</h2>
+        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Stock Catalog (Connected with Master Sheet)</p>
+      </div>
+      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Loading items...</span>
     </div>
-    
-    <!-- SociableKIT Widget Live Connection Start -->
+
+    <!-- Container for dynamic products -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
+      <p class="col-span-full text-center py-10 font-mono text-sm">Syncing with Google Sheets...</p>
+    </div>
+  </section>
+
+  <!-- GOOGLE MAPS SHOWROOM GALLERY -->
+  <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
+    <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
     <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
     <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
-    <!-- SociableKIT Widget Live Connection End -->
   </section>
-
-  <!-- FIND US ONLINE -->
-  <section class="border-y-2" style="border-color:rgba(156,122,60,0.35); background:var(--paper-deep);">
-    <div class="max-w-6xl mx-auto px-5 py-14">
-      <div class="text-center mb-10">
-        <h2 class="font-display text-3xl md:text-4xl mb-2">Find Us Online</h2>
-        <p class="text-sm text-[var(--ink)]/70">Check reviews, photos & directions across the web</p>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-        <a href="https://wa.me/916295777518" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
-          <i class="fab fa-whatsapp text-3xl" style="color:#3fae5a"></i>
-          <span class="font-mono text-xs uppercase tracking-widest">WhatsApp</span>
-        </a>
-        <a href="https://share.google/NC6ON1q5MDcgxjGOj" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
-          <i class="fas fa-store text-3xl" style="color:var(--red)"></i>
-          <span class="font-mono text-xs uppercase tracking-widest">Business Page</span>
-        </a>
-        <a href="https://share.google/Q5oeGfdG5jfXvF0XN" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
-          <i class="fab fa-instagram text-3xl" style="color:#C13584"></i>
-          <span class="font-mono text-xs uppercase tracking-widest">Instagram</span>
-        </a>
-        <a href="https://share.google/hqorarfACOIgadwZ8" target="_blank" class="tag-card p-5 flex flex-col items-center gap-2 text-center hover:-translate-y-1 transition-transform duration-300">
-          <i class="fas fa-magnifying-glass-location text-3xl" style="color:var(--brass)"></i>
-          <span class="font-mono text-xs uppercase tracking-widest">Justdial</span>
-        </a>
-      </div>
-      <p class="text-center mt-6">
-        <a href="https://share.google/b15lS8c6QBr2jHtvs" target="_blank" class="font-mono text-xs uppercase tracking-widest underline" style="color:var(--red)">View us on magicpin →</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- FOOTER (receipt style) -->
-  <footer class="footer-receipt leather-grain">
-    <div class="max-w-6xl mx-auto px-5 py-14 grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div>
-        <p class="font-display text-2xl font-semibold text-white mb-3">Khadim Raghunathpur</p>
-        <p class="text-sm leading-relaxed mb-4 max-w-sm">Your neighbourhood's official franchise store — curated sections for the whole family, fitted and boxed on the spot.</p>
-        <p class="font-mono text-xs uppercase tracking-widest flex items-center gap-2" style="color:#E7B84E"><i class="fas fa-clock"></i> Open Daily · 8:30 AM – 9:30 PM</p>
-      </div>
-      <div class="font-mono text-sm">
-        <p class="uppercase tracking-widest text-xs mb-3" style="color:#E7B84E">Contact & Location</p>
-        <p class="mb-3 flex items-start gap-2.5"><i class="fas fa-map-marker-alt mt-1" style="color:var(--red)"></i> Nutan Bazar, Raghunathpur, Purulia, West Bengal – 723133</p>
-        <p class="flex items-center gap-2.5"><i class="fas fa-phone" style="color:#3fae5a"></i> +91 62957 77518</p>
-      </div>
-    </div>
-    <div class="receipt-edge"></div>
-    <div class="text-center text-xs py-5 font-mono tracking-wider" style="color:#8a7660">
-      &copy; 2026 KHADIM RAGHUNATHPUR · ALL RIGHTS RESERVED
-    </div>
-  </footer>
 
   <script>
-    function filterSection(category, btn){
-      document.querySelectorAll('.product-card').forEach(card=>{
-        card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+    // !!! এইখানে তোমার গুগল শিটের আইডি বসাবে !!!
+    const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE'; 
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Sheet1&range=A2:K1000`;
+
+    let allProducts = [];
+    let currentFilter = 'all';
+
+    fetch(URL)
+      .then(res => res.text())
+      .then(text => {
+        const data = JSON.parse(text.substr(47).slice(0, -2));
+        const rows = data.table.rows;
+        
+        rows.forEach(row => {
+          const item7Code = row.c[1] ? row.c[1].v : '';
+          const mcCategory = row.c[3] ? row.c[3].v : '';
+          const mc2Group = row.c[4] ? row.c[4].v : '';
+          const brand = row.c[5] ? row.c[5].v : 'KHADIMS';
+          const mrp = row.c[7] ? row.c[7].v : 0;
+          const stockQty = row.c[8] ? row.c[8].v : 0;
+
+          if (!item7Code || item7Code.toString().length < 5) return;
+
+          allProducts.push({
+            code: item7Code,
+            category: mcCategory,
+            group: mc2Group,
+            brand: brand,
+            price: mrp,
+            stock: stockQty
+          });
+        });
+
+        renderCatalog(allProducts);
+      }).catch(err => {
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard.</p>';
       });
-      document.querySelectorAll('.filter-btn').forEach(b=>{
-        b.classList.remove('active');
-        b.style.background = 'var(--card)';
-        b.style.color = 'var(--ink)';
+
+    function renderCatalog(products) {
+      const catalog = document.getElementById('excel-catalog');
+      const countLabel = document.getElementById('product-count');
+      catalog.innerHTML = '';
+      
+      if(products.length === 0) {
+        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No matching products found in stock.</p>';
+        countLabel.innerText = '0 Items';
+        return;
+      }
+
+      countLabel.innerText = `${products.length} Items in Stock`;
+
+      products.forEach(p => {
+        const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
+        const waText = encodeURIComponent(`Hello! I want to check size availability for ${p.category} ${p.brand} (Article Code: ${p.code}) at Khadim Raghunathpur.`);
+
+        catalog.innerHTML += `
+          <div class="tag-card p-4 flex flex-col justify-between product-item" data-title="${p.category} ${p.brand} ${p.code}" data-group="${p.group}">
+            <div>
+              <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
+                <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
+              </div>
+              <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.brand}</span>
+              <h3 class="font-display font-bold text-base mt-2 leading-tight">${p.category}</h3>
+              <p class="text-xs text-gray-500 font-mono mt-1">Article: ${p.code}</p>
+            </div>
+            <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-amber-800/20">
+              <span class="font-mono text-lg font-bold text-[#C81E3A]">₹${p.price}</span>
+              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[11px] px-3 py-2 rounded-full flex items-center gap-1 font-semibold">
+                <i class="fab fa-whatsapp text-sm"></i> Sizes?
+              </a>
+            </div>
+          </div>
+        `;
       });
-      btn.classList.add('active');
-      btn.style.background = 'var(--ink)';
-      btn.style.color = 'var(--paper)';
     }
 
-    // Live 3D tilt effect on product cards (mouse-follow)
-    document.querySelectorAll('.product-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const midX = rect.width / 2;
-        const midY = rect.height / 2;
-        const rotateY = ((x - midX) / midX) * 8;
-        const rotateX = ((midY - y) / midY) * 8;
-        card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    function searchProducts() {
+      const searchVal = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allProducts.filter(p => {
+        const matchesSearch = `${p.category} ${p.brand} ${p.code}`.toLowerCase().includes(searchVal);
+        const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && p.category.toUpperCase().includes('BOYS'));
+        return matchesSearch && matchesFilter;
       });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    });
-  </script>
+      renderCatalog(filtered);
+    }
 
+    function filterType(type, btn) {
+      currentFilter = type;
+      document.querySelectorAll('#filter-buttons button').forEach(b => {
+        b.classList.remove('bg-[#241610]', 'text-white');
+        b.classList.add('bg-white', 'text-amber-800');
+      });
+      btn.classList.add('bg-[#241610]', 'text-white');
+      searchProducts();
+    }
+  </script>
 </body>
 </html>
