@@ -3,112 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khadim Footwear Stock Catalog</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Khadim Raghunathpur | Step Out In Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #EEE3CF; /* Cream/Beige */
-        }
-        .card {
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: scale(1.05);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+        :root { --ink:#241610; --paper:#EEE3CF; --paper-deep:#E4D5B8; --card:#FFFDF8; --red:#C81E3A; }
+        body { font-family:'Work Sans', sans-serif; background:var(--paper); color:var(--ink); }
+        .font-display { font-family:'Fraunces', serif; }
+        .tag-card { background:var(--card); border:2px dashed rgba(156,122,60,0.5); border-radius:4px; transition:all .35s ease; }
+        .tag-card:hover { transform:translateY(-6px); box-shadow:0 18px 30px -12px rgba(36,22,16,0.25); }
     </style>
 </head>
-<body>
-    <div class="container mx-auto p-5">
-        <h1 class="text-center text-4xl font-bold text-[#241610] mb-5">Khadim Footwear Stock Catalog</h1>
-        <div class="mb-5 flex justify-center">
-            <input type="text" id="search" placeholder="Search..." class="border rounded p-2 w-1/2" />
-        </div>
-        <div class="flex justify-center mb-5">
-            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('ALL')">ALL</button>
-            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('GENTS')">MEN</button>
-            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('LADIES')">WOMEN</button>
-            <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mx-2" onclick="filterProducts('KIDS')">KIDS</button>
-        </div>
-        <div id="product-cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-        
-        <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
-        <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
-    </div>
+<body class="bg-[#EEE3CF]">
 
-    <script>
-        const googleSheetURL = 'https://docs.google.com/spreadsheets/d/1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU/gviz/tq?tqx=out:csv&sheet=sheet1';
-        let products = [];
-        let lastGroup = '';
-
-        async function fetchData() {
-            const response = await fetch(googleSheetURL);
-            const csvData = await response.text();
-            parseCSV(csvData);
-        }
-
-        function parseCSV(data) {
-            const rows = data.split('\n');
-            rows.forEach((row, index) => {
-                if (index === 0 || row.trim() === '') return; // Skip header and empty rows
-                const columns = row.split(',');
-                const parentGroup = columns[1] || lastGroup; // Carry over the last non-empty Group Name
-                lastGroup = columns[1] || lastGroup; // Update lastGroup
-
-                const itemCode = columns[2];
-                const itemName = columns[4];
-                const quantity = parseInt(columns[8], 10);
-                const price = parseFloat(columns[11]);
-
-                if (itemCode && quantity > 0) {
-                    products.push({ parentGroup, itemCode, itemName, quantity, price });
-                }
-            });
-
-            displayProducts(products);
-        }
-
-        function displayProducts(products) {
-            const productCards = document.getElementById('product-cards');
-            productCards.innerHTML = '';
-
-            products.forEach(product => {
-                const imageUrl = `https://khadims.com/images/products/${product.itemCode.slice(0, 7)}.jpg`;
-                const card = `
-                    <div class="card bg-white rounded-lg shadow-lg p-5">
-                        <img src="${imageUrl}" alt="${product.itemName}" class="w-full h-32 object-cover rounded mb-3" onerror="this.onerror=null; this.src='https://via.placeholder.com/150';" />
-                        <h2 class="text-[#241610] font-semibold">${product.parentGroup}</h2>
-                        <h3 class="text-[#241610]">${product.itemName}</h3>
-                        <p class="text-[#241610]">Item Code: ${product.itemCode}</p>
-                        <p class="text-[#C81E3A] font-bold">Price: ₹${product.price.toFixed(2)}</p>
-                        <button class="bg-[#C81E3A] text-white px-4 py-2 rounded mt-2" onclick="whatsappSizes('${product.itemName}')">WhatsApp for Sizes</button>
-                    </div>
-                `;
-                productCards.innerHTML += card;
-            });
-        }
-
-        function filterProducts(category) {
-            const filteredProducts = category === 'ALL' ? products : products.filter(product => product.parentGroup === category);
-            displayProducts(filteredProducts);
-        }
-
-        function whatsappSizes(itemName) {
-            const whatsappNumber = 'YOUR_WHATSAPP_NUMBER'; // Replace with your WhatsApp number
-            const message = `Hello, I would like to know the available sizes for ${itemName}.`;
-            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        document.getElementById('search').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const filteredProducts = products.filter(product =>
-                product.itemName.toLowerCase().includes(searchTerm) ||
-                product.itemCode.toLowerCase().includes(searchTerm) ||
-                product.parentGroup.toLowerCase().includes(searchTerm)
-            );
-            displayProducts(filteredProducts);
-        });
-
-        fetchData();
-    </script>
-</body>
-</html>
+    <!-- NAV -->
+    <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text
