@@ -57,13 +57,12 @@
     </div>
   </section>
 
-  <!-- FRESH SHOWROOM GALLERY (100% Free & No SociableKIT) -->
+  <!-- FRESH SHOWROOM GALLERY -->
   <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
     <h2 class="font-display text-3xl font-bold mb-2">Inside the Showroom</h2>
     <p class="text-xs text-amber-900/70 font-mono mb-6">Our Store Collection Highlights</p>
     
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" id="showroom-gallery">
-      <!-- অটোমেটিক ব্যাকআপ ইমেজেস -->
       <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=1" class="w-full h-36 object-cover rounded"></div>
       <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=2" class="w-full h-36 object-cover rounded"></div>
       <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=3" class="w-full h-36 object-cover rounded"></div>
@@ -74,8 +73,9 @@
   </section>
 
   <script>
-    const SHEET_ID = '1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU'; 
-    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Sheet1&tq=select%20*`;
+    // তোমার এই নতুন শিটের সঠিক আইডি এবং ট্যাবের নাম এখানে লিঙ্ক করা হয়েছে
+    const SHEET_ID = '1n3ZjcjuSskBfBisA29z8lkCM2qdctrDz'; 
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=sheet1&range=B11:P1000`;
 
     let allProducts = [];
     let currentFilter = 'all';
@@ -86,21 +86,34 @@
         const data = JSON.parse(text.substr(47).slice(0, -2));
         const rows = data.table.rows;
         
-        rows.forEach(row => {
-          const item7Code = row.c[1] ? row.c[1].v : '';
-          const mcCategory = row.c[3] ? row.c[3].v : '';
-          const mc2Group = row.c[4] ? row.c[4].v : '';
-          const brand = row.c[5] ? row.c[5].v : 'KHADIMS';
-          const mrp = row.c[7] ? row.c[7].v : 0;
-          const stockQty = row.c[8] ? row.c[8].v : 0;
+        let lastParentGroup = ''; // গ্রুপ ফাঁকা থাকলে আগেরটা ধরে রাখার জন্য
 
-          if (!item7Code || item7Code === "ITEM 7" || item7Code.toString().length < 5) return;
+        rows.forEach(row => {
+          const currentGroup = row.c[0] ? row.c[0].v : '';
+          const itemCode = row.c[1] ? row.c[1].v : '';
+          const itemName = row.c[3] ? row.c[3].v : '';
+          const stockQty = row.c[9] ? row.c[9].v : 0;
+          const mrp = row.c[12] ? row.c[12].v : 0;
+
+          if (currentGroup && currentGroup.trim() !== '') {
+            lastParentGroup = currentGroup;
+          }
+
+          // সাব-টোটাল বা অবৈধ বা ফাঁকা লাইন বাদ দিতে
+          if (!itemCode || itemCode.toString().includes('Sub Total') || !itemName || stockQty <= 0) return;
+
+          // ৭ ডিজিটের কোড বের করার লজিক (যদি ১১ ডিজিট থাকে, প্রথম ৭ ডিজিট ছবি লোডের জন্য নেবে)
+          let cleanCode = itemCode.toString().trim();
+          if (cleanCode.length > 7) {
+            cleanCode = cleanCode.substring(0, 7);
+          }
 
           allProducts.push({
-            code: item7Code,
-            category: mcCategory,
-            group: mc2Group,
-            brand: brand,
+            code: cleanCode,
+            fullCode: itemCode,
+            category: itemName,
+            group: lastParentGroup,
+            brand: 'KHADIMS',
             price: mrp,
             stock: stockQty
           });
@@ -109,7 +122,7 @@
         renderCatalog(allProducts);
         generateGallery(allProducts);
       }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Open Google Sheet, click Share and select \"Anyone with the link\".</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Make sure to click Share and select \"Anyone with the link\".</p>';
       });
 
     function renderCatalog(products) {
@@ -127,7 +140,7 @@
 
       products.forEach(p => {
         const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
-        const waText = encodeURIComponent(`Hello! I want to check size availability for ${p.category} ${p.brand} (Article Code: ${p.code}) at Khadim Raghunathpur.`);
+        const waText = encodeURIComponent(`Hello! I want to check size availability for ${p.category} (Code: ${p.fullCode}) at Khadim Raghunathpur.`);
 
         catalog.innerHTML += `
           <div class="tag-card p-4 flex flex-col justify-between product-item">
@@ -135,13 +148,13 @@
               <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
                 <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
               </div>
-              <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.brand}</span>
-              <h3 class="font-display font-bold text-base mt-2 leading-tight">${p.category}</h3>
-              <p class="text-xs text-gray-500 font-mono mt-1">Article: ${p.code}</p>
+              <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.group}</span>
+              <h3 class="font-display font-bold text-sm mt-2 leading-tight">${p.category}</h3>
+              <p class="text-xs text-gray-500 font-mono mt-1">Code: ${p.fullCode}</p>
             </div>
             <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-amber-800/20">
-              <span class="font-mono text-lg font-bold text-[#C81E3A]">₹${p.price}</span>
-              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[11px] px-3 py-2 rounded-full flex items-center gap-1 font-semibold">
+              <span class="font-mono text-base font-bold text-[#C81E3A]">₹${p.price}</span>
+              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[10px] px-2.5 py-2 rounded-full flex items-center gap-1 font-semibold">
                 <i class="fab fa-whatsapp text-sm"></i> Sizes?
               </a>
             </div>
@@ -154,7 +167,6 @@
       const gallery = document.getElementById('showroom-gallery');
       if (products.length > 0) {
         gallery.innerHTML = '';
-        // প্রথম ১২টি প্রোডাক্টের ছবি শোরুম গ্যালারি হিসেবে দেখাবে
         const itemsForGallery = products.slice(0, 12);
         itemsForGallery.forEach(p => {
           const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
@@ -170,8 +182,8 @@
     function searchProducts() {
       const searchVal = document.getElementById('search-input').value.toLowerCase();
       const filtered = allProducts.filter(p => {
-        const matchesSearch = `${p.category} ${p.brand} ${p.code}`.toLowerCase().includes(searchVal);
-        const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && (p.category.toUpperCase().includes('BOYS') || p.category.toUpperCase().includes('KIDS') || p.category.toUpperCase().includes('GIRLS')));
+        const matchesSearch = `${p.category} ${p.group} ${p.fullCode}`.toLowerCase().includes(searchVal);
+        const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && (p.group.toUpperCase().includes('BOYS') || p.group.toUpperCase().includes('KIDS') || p.group.toUpperCase().includes('GIRLS')));
         return matchesSearch && matchesFilter;
       });
       renderCatalog(filtered);
