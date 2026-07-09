@@ -57,72 +57,88 @@
     </div>
   </section>
 
-  <!-- FRESH SHOWROOM GALLERY -->
+  <!-- SOCIABLEKIT SHOWROOM GALLERY -->
   <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
-    <h2 class="font-display text-3xl font-bold mb-2">Inside the Showroom</h2>
-    <p class="text-xs text-amber-900/70 font-mono mb-6">Our Store Collection Highlights</p>
-    
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" id="showroom-gallery">
-      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=1" class="w-full h-36 object-cover rounded"></div>
-      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=2" class="w-full h-36 object-cover rounded"></div>
-      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=3" class="w-full h-36 object-cover rounded"></div>
-      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=4" class="w-full h-36 object-cover rounded"></div>
-      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=5" class="w-full h-36 object-cover rounded"></div>
-      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=6" class="w-full h-36 object-cover rounded"></div>
-    </div>
+    <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
+    <!-- তুমি যে কোডটা দিলে সেটা এখানে বসানো হয়েছে -->
+    <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div><script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
   </section>
 
   <script>
-    // তোমার এই নতুন শিটের সঠিক আইডি এবং ট্যাবের নাম এখানে লিঙ্ক করা হয়েছে
+    // গুগল শিট আইডি এবং CSV লিঙ্কিং
     const SHEET_ID = '1n3ZjcjuSskBfBisA29z8lkCM2qdctrDz'; 
-    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=sheet1&range=B11:P1000`;
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=sheet1`;
 
     let allProducts = [];
     let currentFilter = 'all';
 
+    function parseCSV(text) {
+      let lines = text.split('\n');
+      let result = [];
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (!line) continue;
+        let row = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+        row = row.map(val => val.replace(/^"|"$/g, '').trim());
+        result.push(row);
+      }
+      return result;
+    }
+
     fetch(URL)
       .then(res => res.text())
       .then(text => {
-        const data = JSON.parse(text.substr(47).slice(0, -2));
-        const rows = data.table.rows;
+        const rows = parseCSV(text);
         
-        let lastParentGroup = ''; // গ্রুপ ফাঁকা থাকলে আগেরটা ধরে রাখার জন্য
+        let headerRow = rows.find(r => r.includes("Item Code") || r.includes("Item Name"));
+        if (!headerRow) {
+          headerRow = ["", "Parent Group Name", "Item Code", "", "Item Name", "", "", "", "", "Quantity", "", "", "Rate"];
+        }
+
+        const idxGroup = headerRow.indexOf("Parent Group Name");
+        const idxCode = headerRow.indexOf("Item Code");
+        const idxName = headerRow.indexOf("Item Name");
+        const idxQty = headerRow.indexOf("Quantity");
+        const idxRate = headerRow.indexOf("Rate");
+
+        let lastParentGroup = 'KHADIMS';
 
         rows.forEach(row => {
-          const currentGroup = row.c[0] ? row.c[0].v : '';
-          const itemCode = row.c[1] ? row.c[1].v : '';
-          const itemName = row.c[3] ? row.c[3].v : '';
-          const stockQty = row.c[9] ? row.c[9].v : 0;
-          const mrp = row.c[12] ? row.c[12].v : 0;
+          const itemCode = row[idxCode] || '';
+          const itemName = row[idxName] || '';
+          const currentGroup = row[idxGroup] || '';
+          const stockQty = parseInt(row[idxQty]) || 0;
+          const mrp = row[idxRate] || '0';
 
-          if (currentGroup && currentGroup.trim() !== '') {
-            lastParentGroup = currentGroup;
+          if (currentGroup && currentGroup.replace(/[^a-zA-Z\s]/g, '').trim() !== '') {
+            if (!currentGroup.includes("Item") && !currentGroup.includes("Parent")) {
+              lastParentGroup = currentGroup;
+            }
           }
 
-          // সাব-টোটাল বা অবৈধ বা ফাঁকা লাইন বাদ দিতে
-          if (!itemCode || itemCode.toString().includes('Sub Total') || !itemName || stockQty <= 0) return;
+          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || stockQty <= 0) return;
 
-          // ৭ ডিজিটের কোড বের করার লজিক (যদি ১১ ডিজিট থাকে, প্রথম ৭ ডিজিট ছবি লোডের জন্য নেবে)
-          let cleanCode = itemCode.toString().trim();
+          let cleanCode = itemCode.replace(/[^0-9]/g, '');
+          let fullCode = cleanCode;
           if (cleanCode.length > 7) {
             cleanCode = cleanCode.substring(0, 7);
           }
 
-          allProducts.push({
-            code: cleanCode,
-            fullCode: itemCode,
-            category: itemName,
-            group: lastParentGroup,
-            brand: 'KHADIMS',
-            price: mrp,
-            stock: stockQty
-          });
+          if (cleanCode.length >= 5) {
+            allProducts.push({
+              code: cleanCode,
+              fullCode: fullCode,
+              category: itemName,
+              group: lastParentGroup,
+              price: mrp,
+              stock: stockQty
+            });
+          }
         });
 
         renderCatalog(allProducts);
-        generateGallery(allProducts);
       }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Make sure to click Share and select \"Anyone with the link\".</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please verify Google Sheet Share settings.</p>';
       });
 
     function renderCatalog(products) {
@@ -161,22 +177,6 @@
           </div>
         `;
       });
-    }
-
-    function generateGallery(products) {
-      const gallery = document.getElementById('showroom-gallery');
-      if (products.length > 0) {
-        gallery.innerHTML = '';
-        const itemsForGallery = products.slice(0, 12);
-        itemsForGallery.forEach(p => {
-          const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
-          gallery.innerHTML += `
-            <div class="tag-card p-2 overflow-hidden bg-white">
-              <img src="${imgUrl}" class="w-full h-36 object-contain rounded" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
-            </div>
-          `;
-        });
-      }
     }
 
     function searchProducts() {
