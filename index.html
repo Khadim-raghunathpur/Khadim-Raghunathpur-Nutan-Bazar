@@ -57,15 +57,23 @@
     </div>
   </section>
 
-  <!-- GOOGLE MAPS SHOWROOM GALLERY -->
+  <!-- FRESH SHOWROOM GALLERY (100% Free & No SociableKIT) -->
   <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
-    <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
-    <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
-    <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
+    <h2 class="font-display text-3xl font-bold mb-2">Inside the Showroom</h2>
+    <p class="text-xs text-amber-900/70 font-mono mb-6">Our Store Collection Highlights</p>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" id="showroom-gallery">
+      <!-- অটোমেটিক ব্যাকআপ ইমেজেস -->
+      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=1" class="w-full h-36 object-cover rounded"></div>
+      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=2" class="w-full h-36 object-cover rounded"></div>
+      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=3" class="w-full h-36 object-cover rounded"></div>
+      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=4" class="w-full h-36 object-cover rounded"></div>
+      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=5" class="w-full h-36 object-cover rounded"></div>
+      <div class="tag-card p-2 overflow-hidden"><img src="https://picsum.photos/400/300?seed=6" class="w-full h-36 object-cover rounded"></div>
+    </div>
   </section>
 
   <script>
-    // তোমার দেওয়া নতুন গুগল শিটের আইডিটি এখানে বসানো হয়েছে
     const SHEET_ID = '1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU'; 
     const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Sheet1&tq=select%20*`;
 
@@ -86,7 +94,6 @@
           const mrp = row.c[7] ? row.c[7].v : 0;
           const stockQty = row.c[8] ? row.c[8].v : 0;
 
-          // হেডার বা অবৈধ কোড ফিল্টার
           if (!item7Code || item7Code === "ITEM 7" || item7Code.toString().length < 5) return;
 
           allProducts.push({
@@ -100,8 +107,9 @@
         });
 
         renderCatalog(allProducts);
+        generateGallery(allProducts);
       }).catch(err => {
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please make sure the sheet Share setting is set to \"Anyone with the link\".</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Open Google Sheet, click Share and select \"Anyone with the link\".</p>';
       });
 
     function renderCatalog(products) {
@@ -115,14 +123,14 @@
         return;
       }
 
-      countLabel.innerText = `${products.length} Items in Stock`;
+      countLabel.innerText = `${products.length} Items`;
 
       products.forEach(p => {
         const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
         const waText = encodeURIComponent(`Hello! I want to check size availability for ${p.category} ${p.brand} (Article Code: ${p.code}) at Khadim Raghunathpur.`);
 
         catalog.innerHTML += `
-          <div class="tag-card p-4 flex flex-col justify-between product-item" data-title="${p.category} ${p.brand} ${p.code}" data-group="${p.group}">
+          <div class="tag-card p-4 flex flex-col justify-between product-item">
             <div>
               <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
                 <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
@@ -140,6 +148,23 @@
           </div>
         `;
       });
+    }
+
+    function generateGallery(products) {
+      const gallery = document.getElementById('showroom-gallery');
+      if (products.length > 0) {
+        gallery.innerHTML = '';
+        // প্রথম ১২টি প্রোডাক্টের ছবি শোরুম গ্যালারি হিসেবে দেখাবে
+        const itemsForGallery = products.slice(0, 12);
+        itemsForGallery.forEach(p => {
+          const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
+          gallery.innerHTML += `
+            <div class="tag-card p-2 overflow-hidden bg-white">
+              <img src="${imgUrl}" class="w-full h-36 object-contain rounded" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
+            </div>
+          `;
+        });
+      }
     }
 
     function searchProducts() {
