@@ -1,216 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khadim Raghunathpur | Step Out In Style</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --ink: #241610;
-            --paper: #EEE3CF;
-            --card: #FFFDF8;
-            --red: #C81E3A;
-        }
-
-        body {
-            font-family: 'Work Sans', sans-serif;
-            background: var(--paper);
-            color: var(--ink);
-        }
-
-        .font-display {
-            font-family: 'Fraunces', serif;
-        }
-
-        .tag-card {
-            background: var(--card);
-            border: 2px dashed rgba(156, 122, 60, 0.5);
-            border-radius: 4px;
-            transition: all .35s ease;
-        }
-
-        .tag-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 30px -12px rgba(36, 22, 16, 0.25);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khadim Raghunathpur | Live Stock Catalog</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root { --ink:#241610; --paper:#EEE3CF; --paper-deep:#E4D5B8; --card:#FFFDF8; --red:#C81E3A; }
+  body { font-family:'Work Sans', sans-serif; background:var(--paper); color:var(--ink); }
+  .font-display { font-family:'Fraunces', serif; }
+  .tag-card { background:var(--card); border:2px dashed rgba(156,122,60,0.5); border-radius:4px; transition:all .35s ease; }
+  .tag-card:hover { transform:translateY(-6px); box-shadow:0 18px 30px -12px rgba(36,22,16,0.25); }
+</style>
 </head>
-
 <body class="bg-[#EEE3CF]">
 
-    <!-- NAV -->
-    <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
-        <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
-        <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
-            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-        </a>
-    </nav>
+  <!-- NAV -->
+  <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
+    <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
+      <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+    </a>
+  </nav>
 
-    <!-- SEARCH & SEARCH FILTERS -->
-    <section class="max-w-6xl mx-auto px-5 pt-10">
-        <div class="bg-[#FFFDF8] p-6 rounded-lg border-2 border-dashed border-amber-800/30 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
-            <div class="w-full md:w-1/2 relative">
-                <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
-                <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, boots, sandals, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
-            </div>
-            <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
-                <button onclick="filterType('all', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-[#241610] text-white font-semibold border">ALL</button>
-                <button onclick="filterType('GENTS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">MEN</button>
-                <button onclick="filterType('LADIES', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">WOMEN</button>
-                <button onclick="filterType('KIDS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">KIDS / BOYS</button>
-            </div>
-        </div>
-    </section>
+  <!-- SEARCH & SEARCH FILTERS -->
+  <section class="max-w-6xl mx-auto px-5 pt-10">
+    <div class="bg-[#FFFDF8] p-6 rounded-lg border-2 border-dashed border-amber-800/30 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+      <div class="w-full md:w-1/2 relative">
+        <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, boots, sandals, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
+      </div>
+      <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
+        <button onclick="filterType('all', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-[#241610] text-white font-semibold border">ALL</button>
+        <button onclick="filterType('GENTS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">MEN</button>
+        <button onclick="filterType('LADIES', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">WOMEN</button>
+        <button onclick="filterType('KIDS', this)" class="px-4 py-1.5 rounded-full text-xs font-mono bg-white border border-amber-800/30 font-semibold hover:bg-amber-50">KIDS</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- LIVE STOCKS FROM EXCEL -->
-    <section class="max-w-6xl mx-auto px-5 py-10">
-        <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
+  <!-- LIVE STOCKS FROM EXCEL -->
+  <section class="max-w-6xl mx-auto px-5 py-10">
+    <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
+      <div>
+        <h2 class="font-display text-3xl font-bold">The Collection</h2>
+        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Stock Catalog (Synced with Current Store Sheet)</p>
+      </div>
+      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Syncing...</span>
+    </div>
+
+    <!-- Container for dynamic products -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
+      <p class="col-span-full text-center py-10 font-mono text-sm">Connecting to Google Sheet...</p>
+    </div>
+  </section>
+
+  <!-- SOCIABLEKIT SHOWROOM GALLERY -->
+  <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
+    <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
+    <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
+    <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
+  </section>
+
+  <script>
+    // তোমার দোকানের আসল লাইভ গুগল শিটের আইডি
+    const SHEET_ID = '1n3ZjcjuSskBfBisA29z8lkCM2qdctrDz'; 
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=sheet1`;
+
+    let allProducts = [];
+    let currentFilter = 'all';
+
+    function parseCSV(text) {
+      let lines = text.split('\n');
+      let result = [];
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (!line) continue;
+        let row = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+        row = row.map(val => val.replace(/^"|"$/g, '').trim());
+        result.push(row);
+      }
+      return result;
+    }
+
+    fetch(URL)
+      .then(res => res.text())
+      .then(text => {
+        const rows = parseCSV(text);
+        let lastParentGroup = 'KHADIMS';
+
+        rows.forEach(row => {
+          // কলাম ইন্ডেক্স ম্যাপ (দোকানের ফিজিক্যাল স্টক ফাইলের লেআউট অনুযায়ী)
+          const currentGroup = row[1] || ''; // Column B: Category Group Name
+          const itemCode = row[2] || '';    // Column C: 11-digit Item Code
+          const itemName = row[4] || '';    // Column E: Item Description
+          const stockQty = parseInt(row[9]) || 0; // Column J: Active Quantity
+          const mrp = row[12] || '0';       // Column M: Store Rate
+
+          if (currentGroup && currentGroup.trim() !== '' && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
+            lastParentGroup = currentGroup;
+          }
+
+          // ইনভ্যালিড ঘর বা জিরো স্টক ফিল্টার
+          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || itemCode.includes("ITEM 7")) return;
+
+          // ম্যাজিক ট্রিক: ১১ ডিজিটের কোড থেকে প্রথম ৭ ডিজিট আলাদা করে আসল ইমেজ লিঙ্ক বানানো
+          let cleanCode = itemCode.replace(/[^0-9]/g, '');
+          let fullCode = cleanCode;
+          let imageCode = cleanCode;
+          
+          if (cleanCode.length > 7) {
+            imageCode = cleanCode.substring(0, 7); // প্রথম ৭ ডিজিট ছবির জন্য
+          }
+
+          if (cleanCode.length >= 5) {
+            allProducts.push({
+              code: imageCode,
+              fullCode: fullCode,
+              category: itemName,
+              group: lastParentGroup,
+              price: mrp,
+              stock: stockQty
+            });
+          }
+        });
+
+        renderCatalog(allProducts);
+      }).catch(err => {
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard. Please verify Google Sheet Share settings.</p>';
+      });
+
+    function renderCatalog(products) {
+      const catalog = document.getElementById('excel-catalog');
+      const countLabel = document.getElementById('product-count');
+      catalog.innerHTML = '';
+      
+      if(products.length === 0) {
+        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No products found matching the criteria.</p>';
+        countLabel.innerText = '0 Items';
+        return;
+      }
+
+      countLabel.innerText = `${products.length} Items`;
+
+      products.forEach(p => {
+        const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
+        const waText = encodeURIComponent(`Hello Khadim Raghunathpur! I want to check size availability for "${p.category}" (Article Code: ${p.fullCode}).`);
+
+        catalog.innerHTML += `
+          <div class="tag-card p-4 flex flex-col justify-between product-item">
             <div>
-                <h2 class="font-display text-3xl font-bold">The Collection</h2>
-                <p class="text-xs text-amber-900/70 font-mono mt-1">Live Stock Catalog (Connected with Master Sheet)</p>
+              <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
+                <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
+              </div>
+              <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.group}</span>
+              <h3 class="font-display font-bold text-sm mt-2 leading-tight text-[#241610]">${p.category}</h3>
+              <p class="text-xs text-gray-500 font-mono mt-1">Code: ${p.fullCode}</p>
             </div>
-            <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Loading items...</span>
-        </div>
+            <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-amber-800/20">
+              <span class="font-mono text-base font-bold text-[#C81E3A]">₹${p.price}</span>
+              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[10px] px-2.5 py-2 rounded-full flex items-center gap-1 font-semibold hover:bg-[#C81E3A] transition-all">
+                <i class="fab fa-whatsapp text-sm"></i> Sizes?
+              </a>
+            </div>
+          </div>
+        `;
+      });
+    }
 
-        <!-- Container for dynamic products -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
-            <p class="col-span-full text-center py-10 font-mono text-sm">Syncing with Google Sheets...</p>
-        </div>
-    </section>
-
-    <!-- SOCIABLEKIT SHOWROOM GALLERY -->
-    <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
-        <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
-        <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
-        <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
-    </section>
-
-    <script>
-        const SHEET_ID = '1c25QBemyEWvVEzxFCyz70q7c34eZjdl-aqBcEKwMWNU';
-        const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=sheet1`;
-
-        let allProducts = [];
-        let currentFilter = 'all';
-
-        function parseCSV(text) {
-            let lines = text.split('\n');
-            let result = [];
-            for (let i = 0; i < lines.length; i++) {
-                let line = lines[i].trim();
-                if (!line) continue;
-                let row = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
-                row = row.map(val => val.replace(/^"|"$/g, '').trim());
-                result.push(row);
-            }
-            return result;
+    function searchProducts() {
+      const searchVal = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allProducts.filter(p => {
+        const matchesSearch = `${p.category} ${p.group} ${p.fullCode}`.toLowerCase().includes(searchVal);
+        
+        let matchesFilter = false;
+        if (currentFilter === 'all') {
+          matchesFilter = true;
+        } else if (currentFilter === 'GENTS') {
+          matchesFilter = p.group.toUpperCase().includes('GENTS') || p.group.toUpperCase().includes('MENS');
+        } else if (currentFilter === 'LADIES') {
+          matchesFilter = p.group.toUpperCase().includes('LADIES') || p.group.toUpperCase().includes('WOMEN');
+        } else if (currentFilter === 'KIDS') {
+          matchesFilter = p.group.toUpperCase().includes('BOYS') || p.group.toUpperCase().includes('KIDS') || p.group.toUpperCase().includes('GIRLS') || p.group.toUpperCase().includes('SCHOOL');
         }
+        
+        return matchesSearch && matchesFilter;
+      });
+      renderCatalog(filtered);
+    }
 
-        fetch(URL)
-            .then(res => res.text())
-            .then(text => {
-                const rows = parseCSV(text);
-                
-                let lastParentGroup = '';
-
-                rows.forEach(row => {
-                    const itemCode = row[2] || '';  // Column C: Item Code
-                    const itemName = row[4] || '';  // Column E: Item Name
-                    const currentGroup = row[1] || ''; // Column B: Parent Group Name
-                    const stockQty = parseInt(row[9]) || 0; // Column J: Quantity
-                    const mrp = row[12] || '0'; // Column M: Rate
-
-                    if (currentGroup && currentGroup.trim() !== '' && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
-                        lastParentGroup = currentGroup;
-                    }
-
-                    if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || stockQty <= 0) return;
-
-                    let cleanCode = itemCode.replace(/[^0-9]/g, '');
-                    if (cleanCode.length > 7) {
-                        cleanCode = cleanCode.substring(0, 7);
-                    }
-
-                    if (cleanCode.length >= 5) {
-                        allProducts.push({
-                            code: cleanCode,
-                            fullCode: itemCode,
-                            category: itemName,
-                            group: lastParentGroup,
-                            price: mrp,
-                            stock: stockQty
-                        });
-                    }
-                });
-
-                renderCatalog(allProducts);
-            })
-            .catch(err => {
-                document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error loading stock dashboard.</p>';
-            });
-
-        function renderCatalog(products) {
-            const catalog = document.getElementById('excel-catalog');
-            const countLabel = document.getElementById('product-count');
-            catalog.innerHTML = '';
-            
-            if(products.length === 0) {
-                catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No products found in stock.</p>';
-                countLabel.innerText = '0 Items';
-                return;
-            }
-
-            countLabel.innerText = `${products.length} Items`;
-
-            products.forEach(p => {
-                const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
-                const waText = encodeURIComponent(`Hello! I want to check size availability for ${p.category} (Code: ${p.fullCode}) at Khadim Raghunathpur.`);
-
-                catalog.innerHTML += `
-                    <div class="tag-card p-4 flex flex-col justify-between product-item">
-                        <div>
-                            <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
-                                <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
-                            </div>
-                            <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.group}</span>
-                            <h3 class="font-display font-bold text-sm mt-2 leading-tight">${p.category}</h3>
-                            <p class="text-xs text-gray-500 font-mono mt-1">Code: ${p.fullCode}</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-amber-800/20">
-                            <span class="font-mono text-base font-bold text-[#C81E3A]">₹${p.price}</span>
-                            <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[10px] px-2.5 py-2 rounded-full flex items-center gap-1 font-semibold">
-                                <i class="fab fa-whatsapp text-sm"></i> Sizes?
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function searchProducts() {
-            const searchVal = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allProducts.filter(p => {
-                const matchesSearch = `${p.category} ${p.group} ${p.fullCode}`.toLowerCase().includes(searchVal);
-                const matchesFilter = currentFilter === 'all' || p.group.toUpperCase().includes(currentFilter) || (currentFilter === 'KIDS' && (p.group.toUpperCase().includes('BOYS') || p.group.toUpperCase().includes('KIDS') || p.group.toUpperCase().includes('GIRLS')));
-                return matchesSearch && matchesFilter;
-            });
-            renderCatalog(filtered);
-        }
-
-        function filterType(type, btn) {
-            currentFilter = type;
-            document.querySelectorAll('#filter-buttons button').forEach(b => {
-                b.classList.remove('bg-[#241610]', 'text-white');
-                b.classList.add('bg-white', 'text-amber-800');
-            });
-            btn.classList.add('bg-[#241610]', 'text-white');
-            searchProducts();
-        }
-    </script>
+    function filterType(type, btn) {
+      currentFilter = type;
+      document.querySelectorAll('#filter-buttons button').forEach(b => {
+        b.classList.remove('bg-[#241610]', 'text-white');
+        b.classList.add('bg-white', 'text-amber-800');
+      });
+      btn.classList.add('bg-[#241610]', 'text-white');
+      searchProducts();
+    }
+  </script>
 </body>
-
 </html>
