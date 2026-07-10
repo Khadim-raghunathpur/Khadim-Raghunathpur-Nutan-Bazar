@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khadim Raghunathpur | Stock Dashboard</title>
+<title>Khadim Raghunathpur | Stock Live</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,7 +20,7 @@
 
   <!-- NAV BAR -->
   <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
-    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM RAGHUNATHPUR</div>
+    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
     <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
       <i class="fab fa-whatsapp"></i> Chat on WhatsApp
     </a>
@@ -47,9 +47,9 @@
     <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
       <div>
         <h2 class="font-display text-3xl font-bold">The Collection</h2>
-        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Connected Store Catalog (Via Assets Repository)</p>
+        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Connected Store Catalog (Via Assets)</p>
       </div>
-      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Loading Assets...</span>
+      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Processing Files...</span>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
@@ -65,8 +65,8 @@
   </section>
 
   <script>
-    // গিটহাবের assets ফোল্ডার থেকে ফাইল সরাসরি অ্যাক্সেস করার নিখুঁত লিঙ্ক
-    const COMPANY_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/runing%20list%20april%202026.xlsx';
+    // স্পেসের ঝামেলা এড়াতে আমরা সরাসরি অবজেক্ট কোড দিয়ে ডিরেক্ট পাথ করে দিলাম
+    const COMPANY_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/runing%20list%20%20april%20%202026.xlsx';
     const STORE_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/physical%20stock%2009.07.2026.xlsx';
 
     let allProducts = [];
@@ -74,8 +74,17 @@
 
     async function fetchExcelJson(url) {
       const response = await fetch(url);
-      if (!response.ok) throw new Error('Network error fetching file');
-      const arrayBuffer = await response.arrayBuffer();
+      if (!response.ok) {
+        // যদি ডবল স্পেসের কারণে ফাইল না পায়, তবে সিঙ্গেল স্পেসের অল্টারনেটিভ ট্রাই করবে ব্যাকআপ হিসেবে
+        const backupUrl = url.replace(/%20%20/g, '%20');
+        const backupResponse = await fetch(backupUrl);
+        if (!backupResponse.ok) throw new Error('File fetch failed');
+        return processBuffer(await backupResponse.arrayBuffer());
+      }
+      return processBuffer(await response.arrayBuffer());
+    }
+
+    function processBuffer(arrayBuffer) {
       const data = new Uint8Array(arrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
       const firstSheetName = workbook.SheetNames[0];
@@ -121,7 +130,7 @@
             cleanCode = cleanCode.substring(0, 7);
           }
 
-          let finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear';
+          let finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear Collection';
 
           if (cleanCode.length >= 5) {
             allProducts.push({
@@ -138,7 +147,7 @@
         renderCatalog(allProducts);
       } catch (error) {
         console.error(error);
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Assets are loading. Please refresh with the URL update below.</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error reading files. Please check back in 1 minute.</p>';
       }
     }
 
