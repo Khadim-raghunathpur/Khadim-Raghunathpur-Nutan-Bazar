@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khadim Raghunathpur | Live Stock Catalog</title>
+<title>Khadim Raghunathpur | Stock Dashboard</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,7 +20,7 @@
 
   <!-- NAV BAR -->
   <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
-    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
+    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM RAGHUNATHPUR</div>
     <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
       <i class="fab fa-whatsapp"></i> Chat on WhatsApp
     </a>
@@ -31,7 +31,7 @@
     <div class="bg-[#FFFDF8] p-6 rounded-lg border-2 border-dashed border-amber-800/30 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
       <div class="w-full md:w-1/2 relative">
         <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
-        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, sandals, boots, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
+        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, sandals, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
       </div>
       <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
         <button onclick="filterType('all', this)" class="px-4 py-1.5 rounded-full text-xs bg-[#241610] text-white font-semibold">ALL</button>
@@ -47,9 +47,9 @@
     <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
       <div>
         <h2 class="font-display text-3xl font-bold">The Collection</h2>
-        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Connected Store Catalog (Via Assets)</p>
+        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Connected Store Catalog (Via Assets Repository)</p>
       </div>
-      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Processing Files...</span>
+      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Loading Assets...</span>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
@@ -65,7 +65,7 @@
   </section>
 
   <script>
-    // তোমার গিটহাবের assets রিপোজিটরির ফাইল পাথ লিংক
+    // গিটহাবের assets ফোল্ডার থেকে ফাইল সরাসরি অ্যাক্সেস করার নিখুঁত লিঙ্ক
     const COMPANY_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/runing%20list%20april%202026.xlsx';
     const STORE_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/physical%20stock%2009.07.2026.xlsx';
 
@@ -90,7 +90,6 @@
           fetchExcelJson(STORE_FILE_URL)
         ]);
 
-        // ১. কোম্পানি ফাইল ম্যাপ জেনারেট করা (ছবি মেলানোর জন্য)
         let companyMap = {};
         companyRows.forEach(row => {
           const item11 = row[0] ? row[0].toString().trim() : '';
@@ -101,7 +100,6 @@
           if (item11) companyMap[item11] = mcName;
         });
 
-        // ২. তোমার নিজের দোকানের স্টকের ফাইল প্রোসেস করা
         let lastParentGroup = 'KHADIMS';
         
         storeRows.forEach(row => {
@@ -117,15 +115,13 @@
 
           if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || stockQty <= 0) return;
 
-          // ১১ ডিজিটের কোড থেকে ৭ ডিজিটের ক্লিন ইমেজ কোড আলাদা করার লজিক
           let cleanCode = itemCode.replace(/[^0-9]/g, '');
           let fullCode = cleanCode;
           if (cleanCode.length > 7) {
             cleanCode = cleanCode.substring(0, 7);
           }
 
-          // দুই ফাইলের নাম এবং ডিসক্রিপশন মার্জ করার ফাইনাল ট্রিক
-          let finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear Collection';
+          let finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear';
 
           if (cleanCode.length >= 5) {
             allProducts.push({
@@ -142,7 +138,7 @@
         renderCatalog(allProducts);
       } catch (error) {
         console.error(error);
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error reading asset files. Please check back in a few minutes.</p>';
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Assets are loading. Please refresh with the URL update below.</p>';
       }
     }
 
