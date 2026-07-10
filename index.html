@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khadim Raghunathpur | Step Out In Style</title>
+<title>Khadim Raghunathpur | Live Stock Catalog</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900&family=Work+Sans:wght@400;500;600;700&display=swap');
@@ -19,103 +20,195 @@
 
   <!-- NAV BAR -->
   <nav class="bg-[#FFFDF8]/95 sticky top-0 z-50 border-b-2 border-amber-800/20 px-5 py-4 flex justify-between items-center">
-    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM RAGHUNATHPUR</div>
+    <div class="text-2xl font-bold text-[#C81E3A] font-display">KHADIM</div>
     <a href="https://wa.me/916295777518" target="_blank" class="bg-[#C81E3A] text-white px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
       <i class="fab fa-whatsapp"></i> Chat on WhatsApp
     </a>
   </nav>
 
-  <!-- HERO SECTION -->
-  <section class="max-w-6xl mx-auto px-5 pt-12 pb-6 text-center">
-    <h1 class="font-display text-4xl md:text-5xl font-extrabold text-[#241610] mb-4">Welcome to our Store Catalog</h1>
-    <p class="text-base text-amber-900/80 max-w-xl mx-auto mb-8">We bring you the finest collection of Khadim shoes, sandals, and accessories right here in Raghunathpur. Browse our collection below!</p>
-    
-    <div class="flex justify-center gap-4">
-      <a href="https://wa.me/916295777518?text=Hello!%20I%20want%20to%20know%20about%20the%20latest%20stock%20availability." target="_blank" class="bg-[#241610] text-white px-6 py-3 rounded-full font-bold text-sm shadow hover:bg-amber-900 transition-all flex items-center gap-2">
-        <i class="fab fa-whatsapp text-lg"></i> Check Size & Price on WhatsApp
-      </a>
+  <!-- SEARCH & FILTERS -->
+  <section class="max-w-6xl mx-auto px-5 pt-10">
+    <div class="bg-[#FFFDF8] p-6 rounded-lg border-2 border-dashed border-amber-800/30 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+      <div class="w-full md:w-1/2 relative">
+        <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, sandals, boots, belts..." class="w-full pl-11 pr-4 py-2.5 rounded-full border border-amber-800/30 bg-amber-50/20 focus:outline-none focus:border-[#C81E3A] text-sm">
+      </div>
+      <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
+        <button onclick="filterType('all', this)" class="px-4 py-1.5 rounded-full text-xs bg-[#241610] text-white font-semibold">ALL</button>
+        <button onclick="filterType('GENTS', this)" class="px-4 py-1.5 rounded-full text-xs bg-white border border-amber-800/30 font-semibold text-amber-900">MEN</button>
+        <button onclick="filterType('LADIES', this)" class="px-4 py-1.5 rounded-full text-xs bg-white border border-amber-800/30 font-semibold text-amber-900">WOMEN</button>
+        <button onclick="filterType('KIDS', this)" class="px-4 py-1.5 rounded-full text-xs bg-white border border-amber-800/30 font-semibold text-amber-900">KIDS</button>
+      </div>
     </div>
   </section>
 
-  <!-- SHOWROOM GALLERY SECTION -->
+  <!-- CATALOG GRID -->
+  <section class="max-w-6xl mx-auto px-5 py-10">
+    <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
+      <div>
+        <h2 class="font-display text-3xl font-bold">The Collection</h2>
+        <p class="text-xs text-amber-900/70 font-mono mt-1">Live Connected Store Catalog (Via Assets)</p>
+      </div>
+      <span id="product-count" class="text-xs font-mono bg-[#241610]/10 px-3 py-1 rounded-full font-bold">Processing Files...</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
+      <p class="col-span-full text-center py-10 font-mono text-sm">Syncing stock data with official image mapping...</p>
+    </div>
+  </section>
+
+  <!-- SHOWROOM GALLERY -->
   <section class="max-w-6xl mx-auto px-5 py-12 border-t-2 border-amber-800/10">
-    <div class="text-center mb-10">
-      <h2 class="font-display text-3xl font-bold mb-2 text-[#241610]">Explore the Showroom Collection</h2>
-      <p class="text-xs text-amber-900/70 font-mono">Real-time snapshots from our official Google Business Account</p>
-    </div>
-    
-    <!-- SociableKIT Widget (এটি ১০০% লাইভ ছবি দেখাবে) -->
-    <div class="bg-[#FFFDF8] p-4 rounded-xl shadow-sm border border-amber-800/20">
-      <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
-      <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
-    </div>
+    <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
+    <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
+    <script src="https://widgets.sociablekit.com/google-business-photos/widget.js" defer></script>
   </section>
 
-  <!-- FEATURED COLLECTIONS (FALLBACK VISUAL CARDS) -->
-  <section class="max-w-6xl mx-auto px-5 py-10 border-t border-dashed border-amber-800/20">
-    <h3 class="font-display text-2xl font-bold mb-6 text-center text-[#241610]">Our Trending Categories</h3>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Card 1: Gents Premium -->
-      <div class="tag-card p-4 flex flex-col justify-between">
-        <div>
-          <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
-            <img src="https://picsum.photos/400/300?seed=gentsshoes" alt="Gents Collection" class="object-cover w-full h-full rounded">
+  <script>
+    // তোমার গিটহাবের assets রিপোজিটরির ফাইল পাথ লিংক
+    const COMPANY_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/runing%20list%20april%202026.xlsx';
+    const STORE_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/physical%20stock%2009.07.2026.xlsx';
+
+    let allProducts = [];
+    let currentFilter = 'all';
+
+    async function fetchExcelJson(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network error fetching file');
+      const arrayBuffer = await response.arrayBuffer();
+      const data = new Uint8Array(arrayBuffer);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      return XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    }
+
+    async function initializeCatalog() {
+      try {
+        const [companyRows, storeRows] = await Promise.all([
+          fetchExcelJson(COMPANY_FILE_URL),
+          fetchExcelJson(STORE_FILE_URL)
+        ]);
+
+        // ১. কোম্পানি ফাইল ম্যাপ জেনারেট করা (ছবি মেলানোর জন্য)
+        let companyMap = {};
+        companyRows.forEach(row => {
+          const item11 = row[0] ? row[0].toString().trim() : '';
+          const item7 = row[1] ? row[1].toString().trim() : '';
+          const mcName = row[3] ? row[3].toString().trim() : '';
+          
+          if (item7) companyMap[item7] = mcName;
+          if (item11) companyMap[item11] = mcName;
+        });
+
+        // ২. তোমার নিজের দোকানের স্টকের ফাইল প্রোসেস করা
+        let lastParentGroup = 'KHADIMS';
+        
+        storeRows.forEach(row => {
+          const currentGroup = row[1] ? row[1].toString().trim() : '';
+          const itemCode = row[2] ? row[2].toString().trim() : '';
+          const itemName = row[4] ? row[4].toString().trim() : '';
+          const stockQty = parseInt(row[10]) || 0;
+          const mrp = row[14] || '0';
+
+          if (currentGroup && currentGroup !== '' && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
+            lastParentGroup = currentGroup;
+          }
+
+          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || stockQty <= 0) return;
+
+          // ১১ ডিজিটের কোড থেকে ৭ ডিজিটের ক্লিন ইমেজ কোড আলাদা করার লজিক
+          let cleanCode = itemCode.replace(/[^0-9]/g, '');
+          let fullCode = cleanCode;
+          if (cleanCode.length > 7) {
+            cleanCode = cleanCode.substring(0, 7);
+          }
+
+          // দুই ফাইলের নাম এবং ডিসক্রিপশন মার্জ করার ফাইনাল ট্রিক
+          let finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear Collection';
+
+          if (cleanCode.length >= 5) {
+            allProducts.push({
+              code: cleanCode,
+              fullCode: fullCode,
+              category: finalName,
+              group: lastParentGroup,
+              price: mrp,
+              stock: stockQty
+            });
+          }
+        });
+
+        renderCatalog(allProducts);
+      } catch (error) {
+        console.error(error);
+        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-red-600">Error reading asset files. Please check back in a few minutes.</p>';
+      }
+    }
+
+    function renderCatalog(products) {
+      const catalog = document.getElementById('excel-catalog');
+      const countLabel = document.getElementById('product-count');
+      catalog.innerHTML = '';
+      
+      if(products.length === 0) {
+        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-gray-500">No active products found in stock.</p>';
+        countLabel.innerText = '0 Items';
+        return;
+      }
+
+      countLabel.innerText = `${products.length} Items`;
+
+      products.forEach(p => {
+        const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
+        const waText = encodeURIComponent(`Hello Khadim Raghunathpur! I want to check size availability for "${p.category}" (Article Code: ${p.fullCode}).`);
+
+        catalog.innerHTML += `
+          <div class="tag-card p-4 flex flex-col justify-between">
+            <div>
+              <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
+                <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
+              </div>
+              <span class="text-[10px] uppercase font-mono tracking-wider text-amber-800 bg-amber-800/10 px-2 py-0.5 rounded">${p.group}</span>
+              <h3 class="font-display font-bold text-sm mt-2 leading-tight text-[#241610]">${p.category}</h3>
+              <p class="text-xs text-gray-500 font-mono mt-1">Code: ${p.fullCode}</p>
+            </div>
+            <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-amber-800/20">
+              <span class="font-mono text-base font-bold text-[#C81E3A]">₹${p.price}</span>
+              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="bg-[#241610] text-white text-[10px] px-2.5 py-2 rounded-full flex items-center gap-1 font-semibold hover:bg-[#C81E3A] transition-all">
+                <i class="fab fa-whatsapp text-sm"></i> Sizes?
+              </a>
+            </div>
           </div>
-          <span class="text-[10px] uppercase font-mono tracking-wider text-[#C81E3A] bg-red-100 px-2 py-0.5 rounded font-bold">Premium Men</span>
-          <h4 class="font-display font-bold text-base mt-2">Gents Formal & Casual Shoes</h4>
-          <p class="text-xs text-gray-500 mt-1">Explore our wide range of office shoes, sneakers, and casual wear loafers.</p>
-        </div>
-        <a href="https://wa.me/916295777518?text=Hello!%20I%20am%20interested%20in%20Gents%20Formal%20and%20Casual%20Shoes." target="_blank" class="bg-[#241610] text-white text-xs py-2 rounded-full text-center mt-4 font-semibold block">Ask for Sizes & Price</a>
-      </div>
+        `;
+      });
+    }
 
-      <!-- Card 2: Ladies Fashion -->
-      <div class="tag-card p-4 flex flex-col justify-between">
-        <div>
-          <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
-            <img src="https://picsum.photos/400/300?seed=ladiessandals" alt="Ladies Collection" class="object-cover w-full h-full rounded">
-          </div>
-          <span class="text-[10px] uppercase font-mono tracking-wider text-[#C81E3A] bg-red-100 px-2 py-0.5 rounded font-bold">Stylish Women</span>
-          <h4 class="font-display font-bold text-base mt-2">Ladies Sandals & Heels</h4>
-          <p class="text-xs text-gray-500 mt-1">Beautiful designer flat sandals, party heels, and comfortable daily-use chappals.</p>
-        </div>
-        <a href="https://wa.me/916295777518?text=Hello!%20I%20am%20interested%20in%20Ladies%20Sandals%20and%20Heels." target="_blank" class="bg-[#241610] text-white text-xs py-2 rounded-full text-center mt-4 font-semibold block">Ask for Sizes & Price</a>
-      </div>
+    function searchProducts() {
+      const searchVal = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allProducts.filter(p => {
+        const matchesSearch = `${p.category} ${p.group} ${p.fullCode}`.toLowerCase().includes(searchVal);
+        let matchesFilter = false;
+        if (currentFilter === 'all') matchesFilter = true;
+        else if (currentFilter === 'GENTS') matchesFilter = p.group.toUpperCase().includes('GENTS') || p.group.toUpperCase().includes('MENS');
+        else if (currentFilter === 'LADIES') matchesFilter = p.group.toUpperCase().includes('LADIES') || p.group.toUpperCase().includes('WOMEN');
+        else if (currentFilter === 'KIDS') matchesFilter = p.group.toUpperCase().includes('BOYS') || p.group.toUpperCase().includes('KIDS') || p.group.toUpperCase().includes('GIRLS') || p.group.toUpperCase().includes('SCHOOL');
+        return matchesSearch && matchesFilter;
+      });
+      renderCatalog(filtered);
+    }
 
-      <!-- Card 3: Sports and Active -->
-      <div class="tag-card p-4 flex flex-col justify-between">
-        <div>
-          <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
-            <img src="https://picsum.photos/400/300?seed=sportsshoes" alt="Sports Collection" class="object-cover w-full h-full rounded">
-          </div>
-          <span class="text-[10px] uppercase font-mono tracking-wider text-[#C81E3A] bg-red-100 px-2 py-0.5 rounded font-bold">Sports & Active</span>
-          <h4 class="font-display font-bold text-base mt-2">Khadim Active Running Shoes</h4>
-          <p class="text-xs text-gray-500 mt-1">Lightweight sports shoes, gym sneakers, and durable running footwear for all.</p>
-        </div>
-        <a href="https://wa.me/916295777518?text=Hello!%20I%20am%20interested%20in%20Khadim%20Active%20Running%20Shoes." target="_blank" class="bg-[#241610] text-white text-xs py-2 rounded-full text-center mt-4 font-semibold block">Ask for Sizes & Price</a>
-      </div>
+    function filterType(type, btn) {
+      currentFilter = type;
+      document.querySelectorAll('#filter-buttons button').forEach(b => {
+        b.classList.remove('bg-[#241610]', 'text-white');
+        b.classList.add('bg-white', 'text-amber-900');
+      });
+      btn.classList.add('bg-[#241610]', 'text-white');
+      searchProducts();
+    }
 
-      <!-- Card 4: Accessories -->
-      <div class="tag-card p-4 flex flex-col justify-between">
-        <div>
-          <div class="w-full h-44 bg-white flex items-center justify-center rounded overflow-hidden mb-3 border p-2">
-            <img src="https://picsum.photos/400/300?seed=leatherbelt" alt="Accessories" class="object-cover w-full h-full rounded">
-          </div>
-          <span class="text-[10px] uppercase font-mono tracking-wider text-[#C81E3A] bg-red-100 px-2 py-0.5 rounded font-bold">Accessories</span>
-          <h4 class="font-display font-bold text-base mt-2">Premium Belts & Wallets</h4>
-          <p class="text-xs text-gray-500 mt-1">High-quality genuine leather belts, wallets, and premium care accessories.</p>
-        </div>
-        <a href="https://wa.me/916295777518?text=Hello!%20I%20am%20interested%20in%20Belts%20and%20Wallets." target="_blank" class="bg-[#241610] text-white text-xs py-2 rounded-full text-center mt-4 font-semibold block">Ask for Sizes & Price</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="bg-[#241610] text-white/70 py-6 text-center text-xs mt-12 border-t-4 border-[#C81E3A]">
-    <p class="font-display text-base text-white mb-2">Khadim Showroom - Raghunathpur</p>
-    <p>Nutan Bazar, Purulia, West Bengal - 723133</p>
-    <p class="mt-4 text-[10px]">&copy; 2026 Khadim Raghunathpur. All Rights Reserved.</p>
-  </footer>
-
+    window.onload = initializeCatalog;
+  </script>
 </body>
 </html>
