@@ -183,7 +183,12 @@
         <h2 class="font-display text-3xl font-bold">The Collection</h2>
         <p class="eyebrow font-mono mt-1">REAL-TIME STOCK · NOT A CATALOG PHOTO</p>
       </div>
-      <span id="product-count" class="font-mono text-xs glass px-3 py-1 rounded-full font-bold" style="color:var(--blue)">Processing Files...</span>
+      <div class="flex items-center gap-2">
+        <span id="product-count" class="font-mono text-xs glass px-3 py-1 rounded-full font-bold" style="color:var(--blue)">Processing Files...</span>
+        <button onclick="initializeCatalog()" title="Re-sync stock" class="font-mono text-xs glass px-3 py-1 rounded-full font-bold flex items-center gap-1.5" style="color:var(--orange)">
+          <i class="fas fa-rotate-right"></i> Refresh
+        </button>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
@@ -211,13 +216,34 @@
 
     let allProducts = [];
     let currentFilter = 'all';
+    const debugLog = [];
 
-    async function fetchExcelJson(url) {
-      const response = await fetch(url);
+    function log(msg) {
+      debugLog.push(msg);
+      console.log('[catalog]', msg);
+    }
+
+    // Turns "1,299", " 12 pcs", "", null, etc into a clean number instead of silently becoming 0/NaN.
+    function toNumber(val) {
+      if (val === null || val === undefined) return 0;
+      const cleaned = val.toString().replace(/[^0-9.\-]/g, '');
+      const n = parseFloat(cleaned);
+      return isNaN(n) ? 0 : n;
+    }
+
+    async function fetchExcelJson(url, label) {
+      let response;
+      try {
+        response = await fetch(url);
+      } catch (netErr) {
+        throw new Error(`${label}: network/CORS error reaching file — ${netErr.message}`);
+      }
       if (!response.ok) {
         const backupUrl = url.replace(/%20%20/g, '%20');
-        const backupResponse = await fetch(backupUrl);
-        if (!backupResponse.ok) throw new Error('File fetch failed');
+        const backupResponse = await fetch(backupUrl).catch(() => null);
+        if (!backupResponse || !backupResponse.ok) {
+          throw new Error(`${label}: file returned HTTP ${response.status}. Check the filename/path on GitHub exactly matches (spaces, case, extension).`);
+        }
         return processBuffer(await backupResponse.arrayBuffer());
       }
       return processBuffer(await response.arrayBuffer());
@@ -231,64 +257,155 @@
       return XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     }
 
-    async function initializeCatalog() {
-      try {
-        const [companyRows, storeRows] = await Promise.all([
-          fetchExcelJson(COMPANY_FILE_URL),
-          fetchExcelJson(STORE_FILE_URL)
-        ]);
+    // Instead of trusting fixed column numbers (which breaks the moment someone
+    // inserts/removes a column in the sheet), find the header row and match
+    // columns by name. Falls back to the old fixed positions only if no header is found.
+    function detectColumns(rows) {
+      const wanted = {
+        itemCode: ['item code', 'itemcode', 'article code', 'sku', 'code'],
+        itemName: ['item name', 'itemname', 'description', 'particulars', 'name'],
+        stock: ['closing stock', 'stock qty', 'stock', 'quantity', 'qty', 'balance qty'],
+        mrp: ['mrp', 'rate', 'sale price', 'price', 'selling price']
+      };
+      for (let r = 0; r < Math.min(rows.length, 15); r++) {
+        const row = rows[r] || [];
+        const lower = row.map(c => (c || '').toString().trim().toLowerCase());
+        const found = {};
+        Object.keys(wanted).forEach(key => {
+          const idx = lower.findIndex(cell => wanted[key].some(w => cell === w || cell.includes(w)));
+          if (idx !== -1) found[key] = idx;
+        });
+        // Need at least itemCode + stock to trust this as the header row
+        if (found.itemCode !== undefined && found.stock !== undefined) {
+          found.headerRowIndex = r;
+          return found;
+        }
+      }
+      return null; // nothing matched — caller falls back to fixed positions
+    }
 
-        let companyMap = {};
+    async function initializeCatalog() {
+      allProducts = [];
+      debugLog.length = 0;
+      document.getElementById('excel-catalog').innerHTML =
+        '<p class="col-span-full text-center py-10 font-mono text-sm text-[color:var(--muted)]">Syncing stock data with official image mapping...</p>';
+
+      let storeRows;
+      try {
+        storeRows = await fetchExcelJson(STORE_FILE_URL, 'Stock file');
+      } catch (error) {
+        console.error(error);
+        showFatalError(error.message);
+        return;
+      }
+
+      // The name-mapping file is a nice-to-have. If it fails, keep going with
+      // whatever item names are already in the stock file, instead of nuking the whole catalog.
+      let companyMap = {};
+      try {
+        const companyRows = await fetchExcelJson(COMPANY_FILE_URL, 'Name-mapping file');
         companyRows.forEach(row => {
           const item11 = row[0] ? row[0].toString().trim() : '';
           const item7 = row[1] ? row[1].toString().trim() : '';
           const mcName = row[3] ? row[3].toString().trim() : '';
-
           if (item7) companyMap[item7] = mcName;
           if (item11) companyMap[item11] = mcName;
         });
-
-        let lastParentGroup = 'KHADIMS';
-
-        storeRows.forEach(row => {
-          const currentGroup = row[1] ? row[1].toString().trim() : '';
-          const itemCode = row[2] ? row[2].toString().trim() : '';
-          const itemName = row[4] ? row[4].toString().trim() : '';
-          const stockQty = parseInt(row[10]) || 0;
-          const mrp = row[14] || '0';
-
-          if (currentGroup && currentGroup !== '' && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
-            lastParentGroup = currentGroup;
-          }
-
-          if (!itemCode || itemCode === "Item Code" || itemCode.includes("Sub Total") || stockQty <= 0) return;
-
-          let cleanCode = itemCode.replace(/[^0-9]/g, '');
-          let fullCode = cleanCode;
-          if (cleanCode.length > 7) {
-            cleanCode = cleanCode.substring(0, 7);
-          }
-
-          let finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear Collection';
-
-          if (cleanCode.length >= 5) {
-            allProducts.push({
-              code: cleanCode,
-              fullCode: fullCode,
-              category: finalName,
-              group: lastParentGroup,
-              price: mrp,
-              stock: stockQty
-            });
-          }
-        });
-
-        document.getElementById('live-stat').innerText = allProducts.reduce((sum, p) => sum + p.stock, 0);
-        renderCatalog(allProducts);
+        log(`Name-mapping file: ${companyRows.length} rows loaded.`);
       } catch (error) {
-        console.error(error);
-        document.getElementById('excel-catalog').innerHTML = '<p class="col-span-full text-center font-mono text-sm" style="color:var(--orange)">Error reading files. Please check back in 1 minute.</p>';
+        console.warn(error);
+        log(`Name-mapping file skipped (${error.message}). Falling back to in-sheet item names.`);
       }
+
+      const cols = detectColumns(storeRows);
+      const useCol = cols || { itemCode: 2, itemName: 4, stock: 10, mrp: 14, headerRowIndex: -1 };
+      log(cols
+        ? `Header row detected at row ${cols.headerRowIndex + 1}. Columns: code=${cols.itemCode}, name=${cols.itemName}, stock=${cols.stock}, mrp=${cols.mrp}.`
+        : `No header row matched — using fallback fixed columns (code=2, name=4, stock=10, mrp=14). If stock still looks wrong, your sheet's column order differs from what this expects.`);
+
+      let lastParentGroup = 'KHADIMS';
+      let rowsRead = 0, rowsSkippedNoCode = 0, rowsSkippedZeroStock = 0, rowsKept = 0;
+      const byCode = {}; // aggregate duplicate codes (same shoe listed on multiple racks/rows)
+
+      storeRows.forEach((row, idx) => {
+        if (idx === useCol.headerRowIndex) return; // skip the header row itself
+        rowsRead++;
+
+        const currentGroup = row[1] ? row[1].toString().trim() : '';
+        const itemCode = useCol.itemCode !== undefined && row[useCol.itemCode] ? row[useCol.itemCode].toString().trim() : '';
+        const itemName = useCol.itemName !== undefined && row[useCol.itemName] ? row[useCol.itemName].toString().trim() : '';
+        const stockQty = toNumber(row[useCol.stock]);
+        const mrp = toNumber(row[useCol.mrp]);
+
+        if (currentGroup && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
+          lastParentGroup = currentGroup;
+        }
+
+        if (!itemCode || itemCode.toLowerCase().includes("item code") || itemCode.includes("Sub Total")) {
+          rowsSkippedNoCode++;
+          return;
+        }
+        if (stockQty <= 0) {
+          rowsSkippedZeroStock++;
+          return;
+        }
+
+        let cleanCode = itemCode.replace(/[^0-9]/g, '');
+        let fullCode = cleanCode;
+        if (cleanCode.length > 7) cleanCode = cleanCode.substring(0, 7);
+        if (cleanCode.length < 5) { rowsSkippedNoCode++; return; }
+
+        const finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear Collection';
+
+        if (byCode[fullCode]) {
+          // Same article appears on more than one row/rack — combine instead of showing duplicate cards or dropping stock.
+          byCode[fullCode].stock += stockQty;
+        } else {
+          byCode[fullCode] = {
+            code: cleanCode,
+            fullCode: fullCode,
+            category: finalName,
+            group: lastParentGroup,
+            price: mrp ? mrp.toFixed(0) : '0',
+            stock: stockQty
+          };
+          rowsKept++;
+        }
+      });
+
+      allProducts = Object.values(byCode);
+      log(`Rows read: ${rowsRead}. Skipped (no valid code/header/subtotal): ${rowsSkippedNoCode}. Skipped (zero stock): ${rowsSkippedZeroStock}. Unique products kept: ${rowsKept}.`);
+
+      document.getElementById('live-stat').innerText = allProducts.reduce((sum, p) => sum + p.stock, 0);
+      renderCatalog(allProducts);
+      renderDiagnostics();
+    }
+
+    function showFatalError(message) {
+      document.getElementById('excel-catalog').innerHTML = `
+        <div class="col-span-full text-center py-10 font-mono text-sm" style="color:var(--orange)">
+          <p class="font-bold mb-2">Couldn't load the stock file.</p>
+          <p class="text-[color:var(--muted)] max-w-lg mx-auto">${message}</p>
+          <button onclick="initializeCatalog()" class="neon-btn text-[#0A0D14] px-4 py-2 rounded-full font-semibold text-xs mt-4">Try Again</button>
+        </div>`;
+      document.getElementById('product-count').innerText = 'Load failed';
+    }
+
+    function renderDiagnostics() {
+      let panel = document.getElementById('diagnostics-panel');
+      if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'diagnostics-panel';
+        panel.className = 'max-w-6xl mx-auto px-5 pb-10';
+        document.getElementById('excel-catalog').parentElement.after(panel);
+      }
+      panel.innerHTML = `
+        <details class="glass rounded-xl p-4 font-mono text-xs text-[color:var(--muted)]">
+          <summary class="cursor-pointer" style="color:var(--blue)">Sync diagnostics (tap to expand)</summary>
+          <ul class="mt-3 space-y-1 list-disc list-inside">
+            ${debugLog.map(l => `<li>${l}</li>`).join('')}
+          </ul>
+        </details>`;
     }
 
     function renderCatalog(products) {
