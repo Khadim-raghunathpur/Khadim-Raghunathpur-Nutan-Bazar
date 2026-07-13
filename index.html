@@ -10,23 +10,24 @@
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
   :root{
-    --bg:#0A0D14;
-    --glass:rgba(22,27,41,0.55);
-    --line:rgba(255,255,255,0.08);
-    --ink:#EEF1F7;
-    --muted:#7C879C;
-    --blue:#39C6FF;
-    --orange:#FF6A2B;
+    --bg:#170D0A;
+    --glass:rgba(46,26,18,0.55);
+    --line:rgba(255,235,210,0.10);
+    --ink:#F6ECDD;
+    --muted:#B99A7C;
+    --terracotta:#C1502E;
+    --gold:#D9A441;
   }
   *{box-sizing:border-box;}
   body{
     font-family:'Inter',sans-serif;
     background:
-      radial-gradient(1000px 500px at 85% -5%, rgba(57,198,255,0.14), transparent 60%),
-      radial-gradient(900px 500px at 10% 10%, rgba(255,106,43,0.10), transparent 60%),
+      radial-gradient(1000px 500px at 85% -5%, rgba(217,164,65,0.16), transparent 60%),
+      radial-gradient(900px 500px at 8% 8%, rgba(193,80,46,0.16), transparent 60%),
       var(--bg);
     color:var(--ink);
     min-height:100vh;
+    overflow-x:hidden;
   }
   .font-display{font-family:'Space Grotesk',sans-serif;}
   .font-mono{font-family:'JetBrains Mono',monospace;}
@@ -39,25 +40,35 @@
   }
 
   .neon-btn{
-    background:linear-gradient(135deg, var(--blue), var(--orange));
-    box-shadow:0 0 0 1px rgba(255,255,255,0.08), 0 8px 30px -8px rgba(57,198,255,0.5);
+    background:linear-gradient(135deg, var(--terracotta), var(--gold));
+    box-shadow:0 0 0 1px rgba(255,255,255,0.08), 0 8px 30px -8px rgba(193,80,46,0.5);
   }
-  .neon-btn:hover{ box-shadow:0 0 0 1px rgba(255,255,255,0.15), 0 10px 40px -6px rgba(255,106,43,0.6); }
+  .neon-btn:hover{ box-shadow:0 0 0 1px rgba(255,255,255,0.15), 0 10px 40px -6px rgba(217,164,65,0.6); }
 
-  .text-glow-blue{ text-shadow:0 0 18px rgba(57,198,255,0.55); }
+  .text-glow{ text-shadow:0 0 18px rgba(217,164,65,0.45); }
 
-  .eyebrow{ letter-spacing:.18em; font-size:11px; color:var(--blue); }
+  .eyebrow{ letter-spacing:.18em; font-size:11px; color:var(--gold); }
 
-  .shoe-wrap{ perspective:900px; }
-  .shoe-float{ animation: floaty 6s ease-in-out infinite; transform-style:preserve-3d; }
-  @keyframes floaty{
-    0%,100%{ transform: translateY(0px) rotateZ(-3deg); }
-    50%{ transform: translateY(-18px) rotateZ(2deg); }
-  }
-  .shoe-glow{ filter:drop-shadow(0 30px 40px rgba(57,198,255,0.25)) drop-shadow(0 10px 20px rgba(255,106,43,0.2)); }
+  /* --- hero 3D shoe collage --- */
+  .hero-stage{ perspective:1100px; }
+  .shoe-layer{ transform-style:preserve-3d; }
 
-  .ring-scan{ animation: spin 14s linear infinite; transform-origin:center; }
+  .float-a{ animation: floatA 7s ease-in-out infinite; }
+  .float-b{ animation: floatB 9s ease-in-out infinite; }
+  .float-c{ animation: floatC 8s ease-in-out infinite; }
+  .float-d{ animation: floatD 10s ease-in-out infinite; }
+  .float-e{ animation: floatE 6.5s ease-in-out infinite; }
+
+  @keyframes floatA{ 0%,100%{ transform: translate3d(0,0,0) rotateZ(-4deg);} 50%{ transform: translate3d(0,-14px,20px) rotateZ(2deg);} }
+  @keyframes floatB{ 0%,100%{ transform: translate3d(0,0,10px) rotateZ(3deg);} 50%{ transform: translate3d(0,12px,-10px) rotateZ(-3deg);} }
+  @keyframes floatC{ 0%,100%{ transform: translate3d(0,0,-15px) rotateZ(-2deg);} 50%{ transform: translate3d(0,-10px,15px) rotateZ(4deg);} }
+  @keyframes floatD{ 0%,100%{ transform: translate3d(0,0,5px) rotateZ(5deg);} 50%{ transform: translate3d(0,10px,-5px) rotateZ(-1deg);} }
+  @keyframes floatE{ 0%,100%{ transform: translate3d(0,0,0) rotateZ(-6deg);} 50%{ transform: translate3d(0,-8px,10px) rotateZ(-1deg);} }
+
+  .alpona-spin{ animation: spin 40s linear infinite; transform-origin:center; }
   @keyframes spin{ to{ transform:rotate(360deg);} }
+
+  .shoe-shadow{ filter:drop-shadow(0 20px 25px rgba(0,0,0,0.45)); }
 
   .info-card{
     background:var(--glass);
@@ -65,10 +76,14 @@
     border-radius:14px;
     transition:transform .25s ease, border-color .25s ease;
   }
-  .info-card:hover{ transform:translateY(-4px); border-color:rgba(57,198,255,0.4); }
+  .info-card:hover{ transform:translateY(-4px); border-color:rgba(217,164,65,0.45); }
 
   ::-webkit-scrollbar{ height:8px; width:8px; }
-  ::-webkit-scrollbar-thumb{ background:rgba(57,198,255,0.3); border-radius:4px; }
+  ::-webkit-scrollbar-thumb{ background:rgba(217,164,65,0.35); border-radius:4px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .float-a,.float-b,.float-c,.float-d,.float-e,.alpona-spin{ animation:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -76,10 +91,10 @@
   <!-- NAV -->
   <nav class="glass sticky top-0 z-50 px-5 py-4 flex justify-between items-center">
     <div class="font-display text-xl font-bold tracking-tight">
-      KHADIM <span style="color:var(--blue)">/</span> RAGHUNATHPUR
+      KHADIM <span style="color:var(--gold)">/</span> RAGHUNATHPUR
     </div>
     <a href="https://wa.me/916295777518" target="_blank"
-       class="neon-btn text-[#0A0D14] px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
+       class="neon-btn text-[#170D0A] px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
       <i class="fab fa-whatsapp"></i> Chat on WhatsApp
     </a>
   </nav>
@@ -97,7 +112,7 @@
       </p>
       <div class="flex items-center gap-4 flex-wrap">
         <a href="https://wa.me/916295777518?text=Hi%2C%20I%27m%20looking%20for%20a%20pair%20of%20shoes.%20Can%20you%20help%20me%20check%20availability%3F"
-           target="_blank" class="neon-btn text-[#0A0D14] px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2">
+           target="_blank" class="neon-btn text-[#170D0A] px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2">
           <i class="fab fa-whatsapp"></i> Ask What's In Stock
         </a>
         <a href="#visit" class="font-mono text-xs text-[color:var(--muted)] underline decoration-dotted">
@@ -106,23 +121,66 @@
       </div>
     </div>
 
-    <div class="shoe-wrap relative flex items-center justify-center h-64 sm:h-80">
-      <svg class="ring-scan absolute" width="320" height="320" viewBox="0 0 320 320" fill="none">
-        <circle cx="160" cy="160" r="140" stroke="rgba(57,198,255,0.15)" stroke-width="1" stroke-dasharray="4 10"/>
-        <circle cx="160" cy="160" r="110" stroke="rgba(255,106,43,0.12)" stroke-width="1" stroke-dasharray="2 8"/>
+    <!-- 3D shoe collage on an alpona-inspired backdrop -->
+    <div class="hero-stage relative flex items-center justify-center h-72 sm:h-96">
+
+      <!-- alpona-style decorative rings (traditional Bengali threshold motif, rendered as line art) -->
+      <svg class="alpona-spin absolute opacity-60" width="380" height="380" viewBox="0 0 380 380" fill="none">
+        <circle cx="190" cy="190" r="160" stroke="rgba(217,164,65,0.25)" stroke-width="1"/>
+        <g stroke="rgba(217,164,65,0.35)" stroke-width="1.4" fill="none">
+          <path d="M190 40c14 30-14 30 0 60c14 30-14 30 0 60"/>
+          <path d="M190 40c-14 30 14 30 0 60c-14 30 14 30 0 60"/>
+          <path d="M340 190c-30 14-30-14-60 0c-30 14-30-14-60 0"/>
+          <path d="M340 190c-30-14-30 14-60 0c-30-14-30 14-60 0"/>
+        </g>
+        <circle cx="190" cy="190" r="110" stroke="rgba(193,80,46,0.3)" stroke-width="1" stroke-dasharray="3 9"/>
       </svg>
-      <svg class="shoe-float shoe-glow relative" width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- back row: smaller, softer, further away -->
+      <svg class="shoe-layer float-c shoe-shadow absolute opacity-70" style="left:6%; top:8%;" width="90" height="60" viewBox="0 0 120 70" fill="none">
+        <!-- sandal / chappal silhouette -->
+        <path d="M8 50c0-10 8-14 20-16l60-8c10-1 16-6 18-12 3-8-2-14-10-14H30c-14 0-22 8-22 20v30z" fill="url(#gA)"/>
+        <path d="M14 42c10-3 22-2 32 1M50 38c10-3 22-3 32 0" stroke="rgba(217,164,65,0.5)" stroke-width="2" stroke-linecap="round"/>
+        <defs><linearGradient id="gA" x1="0" y1="0" x2="120" y2="70"><stop stop-color="#1E9E8B"/><stop offset="1" stop-color="#0E5C50"/></linearGradient></defs>
+      </svg>
+
+      <svg class="shoe-layer float-d shoe-shadow absolute opacity-75" style="right:4%; top:4%;" width="80" height="80" viewBox="0 0 100 100" fill="none">
+        <!-- small kids shoe -->
+        <path d="M10 70c0-10 6-16 16-18l30-6c6-1 10-5 12-10 3-7 10-12 18-10 5 1 8 5 8 10v10c0 8 6 14 14 16l4 1c4 1 6 4 6 8 0 6-5 10-11 10H22c-8 0-12-5-12-11z" fill="url(#gB)" stroke="rgba(217,164,65,0.4)" stroke-width="1"/>
+        <circle cx="40" cy="55" r="3" fill="rgba(217,164,65,0.6)"/>
+        <circle cx="52" cy="52" r="3" fill="rgba(217,164,65,0.6)"/>
+        <defs><linearGradient id="gB" x1="0" y1="0" x2="100" y2="100"><stop stop-color="#F2B233"/><stop offset="1" stop-color="#C4841A"/></linearGradient></defs>
+      </svg>
+
+      <!-- mid row -->
+      <svg class="shoe-layer float-b shoe-shadow absolute opacity-90" style="left:0%; bottom:6%;" width="130" height="90" viewBox="0 0 160 100" fill="none">
+        <!-- formal oxford -->
+        <path d="M10 78c0-12 8-18 20-20l70-10c8-1 14-6 18-13 5-9 14-15 24-13 7 1 12 7 12 14v14c0 10 8 16 17 18l6 2c5 1 8 5 8 10 0 7-6 12-13 12H24c-9 0-14-6-14-13z"
+              fill="url(#gC)" stroke="rgba(217,164,65,0.45)" stroke-width="1.2"/>
+        <path d="M40 62c14-4 30-4 44 1M92 58c10-3 20-3 30 1" stroke="rgba(246,236,221,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+        <defs><linearGradient id="gC" x1="0" y1="0" x2="160" y2="100"><stop stop-color="#C23B6B"/><stop offset="1" stop-color="#7A1F44"/></linearGradient></defs>
+      </svg>
+
+      <svg class="shoe-layer float-e shoe-shadow absolute opacity-95" style="right:10%; bottom:2%;" width="70" height="110" viewBox="0 0 80 140" fill="none">
+        <!-- heel -->
+        <path d="M20 10c10-4 20 0 22 10l6 60 20 16c6 5 4 14-4 16l-40 6c-8 1-14-5-14-13V70c0-8 3-15 8-21z" fill="url(#gD)" stroke="rgba(217,164,65,0.45)" stroke-width="1.2"/>
+        <path d="M22 20c6-2 12 0 14 6" stroke="rgba(246,236,221,0.3)" stroke-width="1.4" stroke-linecap="round"/>
+        <defs><linearGradient id="gD" x1="0" y1="0" x2="80" y2="140"><stop stop-color="#5B4FC7"/><stop offset="1" stop-color="#2F2678"/></linearGradient></defs>
+      </svg>
+
+      <!-- front / hero shoe: sneaker, largest and sharpest -->
+      <svg class="shoe-layer float-a shoe-shadow relative z-10" width="290" height="190" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M18 120c0-14 10-22 24-26l58-16c10-3 16-10 20-19 6-13 18-21 32-21 8 0 14 4 17 11l9 20c3 7 9 12 16 14l58 16c16 5 28 18 28 35v10c0 9-7 16-16 16H36c-10 0-18-8-18-18v-22z"
-              fill="url(#g1)" stroke="rgba(57,198,255,0.55)" stroke-width="1.5"/>
+              fill="url(#gHero)" stroke="rgba(217,164,65,0.6)" stroke-width="1.6"/>
         <path d="M18 120c0-14 10-22 24-26l58-16c10-3 16-10 20-19 6-13 18-21 32-21 8 0 14 4 17 11l9 20c3 7 9 12 16 14l58 16c16 5 28 18 28 35"
-              stroke="rgba(255,106,43,0.5)" stroke-width="1" fill="none"/>
-        <line x1="70" y1="100" x2="70" y2="150" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-        <line x1="105" y1="95" x2="105" y2="150" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-        <line x1="140" y1="92" x2="140" y2="150" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+              stroke="rgba(193,80,46,0.55)" stroke-width="1" fill="none"/>
+        <line x1="70" y1="100" x2="70" y2="150" stroke="rgba(246,236,221,0.18)" stroke-width="1"/>
+        <line x1="105" y1="95" x2="105" y2="150" stroke="rgba(246,236,221,0.18)" stroke-width="1"/>
+        <line x1="140" y1="92" x2="140" y2="150" stroke="rgba(246,236,221,0.18)" stroke-width="1"/>
         <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="280" y2="180" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#161B29"/>
-            <stop offset="1" stop-color="#0E1220"/>
+          <linearGradient id="gHero" x1="0" y1="0" x2="280" y2="180" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E8622C"/>
+            <stop offset="1" stop-color="#9E2A1E"/>
           </linearGradient>
         </defs>
       </svg>
@@ -133,17 +191,17 @@
   <section class="max-w-6xl mx-auto px-5 pb-16">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
       <div class="info-card p-5">
-        <i class="fas fa-bolt mb-3" style="color:var(--blue)"></i>
+        <i class="fas fa-bolt mb-3" style="color:var(--gold)"></i>
         <h3 class="font-display font-bold text-sm mb-1">Same-day answer</h3>
         <p class="text-xs text-[color:var(--muted)]">Message us your size and style — we check the shop floor and reply the same day, not "call back later."</p>
       </div>
       <div class="info-card p-5">
-        <i class="fas fa-camera mb-3" style="color:var(--orange)"></i>
+        <i class="fas fa-camera mb-3" style="color:var(--terracotta)"></i>
         <h3 class="font-display font-bold text-sm mb-1">Real photos, real price</h3>
         <p class="text-xs text-[color:var(--muted)]">You'll get an actual photo of the pair we have and the exact price — no catalog guesswork.</p>
       </div>
       <div class="info-card p-5">
-        <i class="fas fa-store mb-3" style="color:var(--blue)"></i>
+        <i class="fas fa-store mb-3" style="color:var(--gold)"></i>
         <h3 class="font-display font-bold text-sm mb-1">Hold it for pickup</h3>
         <p class="text-xs text-[color:var(--muted)]">Found your size? Ask us to hold it and walk in whenever suits you.</p>
       </div>
