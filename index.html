@@ -3,18 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khadim Raghunathpur | Live Stock Terminal</title>
+<title>Khadim Raghunathpur | Footwear</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
   :root{
     --bg:#0A0D14;
-    --bg-alt:#0E1220;
     --glass:rgba(22,27,41,0.55);
-    --glass-strong:rgba(22,27,41,0.8);
     --line:rgba(255,255,255,0.08);
     --ink:#EEF1F7;
     --muted:#7C879C;
@@ -49,53 +46,26 @@
 
   .text-glow-blue{ text-shadow:0 0 18px rgba(57,198,255,0.55); }
 
-  .eyebrow{
-    letter-spacing:.18em;
-    font-size:11px;
-    color:var(--blue);
-  }
+  .eyebrow{ letter-spacing:.18em; font-size:11px; color:var(--blue); }
 
-  /* shoe silhouette float */
   .shoe-wrap{ perspective:900px; }
-  .shoe-float{
-    animation: floaty 6s ease-in-out infinite;
-    transform-style:preserve-3d;
-  }
+  .shoe-float{ animation: floaty 6s ease-in-out infinite; transform-style:preserve-3d; }
   @keyframes floaty{
     0%,100%{ transform: translateY(0px) rotateZ(-3deg); }
     50%{ transform: translateY(-18px) rotateZ(2deg); }
   }
   .shoe-glow{ filter:drop-shadow(0 30px 40px rgba(57,198,255,0.25)) drop-shadow(0 10px 20px rgba(255,106,43,0.2)); }
 
-  .ring-scan{
-    animation: spin 14s linear infinite;
-    transform-origin:center;
-  }
+  .ring-scan{ animation: spin 14s linear infinite; transform-origin:center; }
   @keyframes spin{ to{ transform:rotate(360deg);} }
 
-  /* product card */
-  .tag-card{
+  .info-card{
     background:var(--glass);
     border:1px solid var(--line);
     border-radius:14px;
-    transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-    transform-style:preserve-3d;
-    will-change:transform;
+    transition:transform .25s ease, border-color .25s ease;
   }
-  .tag-card:hover{
-    border-color:rgba(57,198,255,0.5);
-    box-shadow:0 20px 40px -18px rgba(57,198,255,0.35);
-  }
-  .stock-dot{ width:6px;height:6px;border-radius:50%; background:var(--blue); box-shadow:0 0 8px var(--blue); }
-  .stock-dot.low{ background:var(--orange); box-shadow:0 0 8px var(--orange); animation:pulse 1.4s ease-in-out infinite; }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
-
-  input#search-input::placeholder{ color:var(--muted); }
-  input#search-input{ background:rgba(255,255,255,0.03); color:var(--ink); }
-  input#search-input:focus{ box-shadow:0 0 0 2px rgba(57,198,255,0.4); }
-
-  .filter-btn{ color:var(--muted); border:1px solid var(--line); background:rgba(255,255,255,0.02); }
-  .filter-btn.active{ color:#0A0D14; background:var(--blue); border-color:var(--blue); }
+  .info-card:hover{ transform:translateY(-4px); border-color:rgba(57,198,255,0.4); }
 
   ::-webkit-scrollbar{ height:8px; width:8px; }
   ::-webkit-scrollbar-thumb{ background:rgba(57,198,255,0.3); border-radius:4px; }
@@ -106,7 +76,7 @@
   <!-- NAV -->
   <nav class="glass sticky top-0 z-50 px-5 py-4 flex justify-between items-center">
     <div class="font-display text-xl font-bold tracking-tight">
-      KHADIM <span class="text-glow-blue" style="color:var(--blue)">/</span> RAGHUNATHPUR
+      KHADIM <span style="color:var(--blue)">/</span> RAGHUNATHPUR
     </div>
     <a href="https://wa.me/916295777518" target="_blank"
        class="neon-btn text-[#0A0D14] px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2">
@@ -115,24 +85,24 @@
   </nav>
 
   <!-- HERO -->
-  <section class="max-w-6xl mx-auto px-5 pt-14 pb-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+  <section class="max-w-6xl mx-auto px-5 pt-14 pb-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
     <div>
-      <p class="eyebrow font-mono mb-4">LIVE INVENTORY · SYNCED FROM STORE FLOOR</p>
+      <p class="eyebrow font-mono mb-4">FAMILY-RUN FOOTWEAR · RAGHUNATHPUR</p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.05] mb-5">
-        Stock that's real,<br>
-        not just a photo.
+        Tell us the shoe,<br>we'll tell you if it's on the shelf.
       </h1>
       <p class="text-sm sm:text-base text-[color:var(--muted)] mb-7 max-w-md">
-        Every pair on this page is pulled straight from today's shop-floor count. No "call to check" —
-        if it's listed, it's on the shelf right now. Tap any pair to confirm your size on WhatsApp.
+        No app, no login — just message us on WhatsApp with what you're after (brand, size, gents/ladies/kids)
+        and we'll check the shop floor and reply with photos and price, same day.
       </p>
       <div class="flex items-center gap-4 flex-wrap">
-        <a href="#catalog" class="neon-btn text-[#0A0D14] px-6 py-3 rounded-full font-semibold text-sm">
-          Browse Live Stock
+        <a href="https://wa.me/916295777518?text=Hi%2C%20I%27m%20looking%20for%20a%20pair%20of%20shoes.%20Can%20you%20help%20me%20check%20availability%3F"
+           target="_blank" class="neon-btn text-[#0A0D14] px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2">
+          <i class="fab fa-whatsapp"></i> Ask What's In Stock
         </a>
-        <div class="font-mono text-xs text-[color:var(--muted)]">
-          <span id="live-stat" class="text-[color:var(--blue)] font-bold">—</span> pairs tracked right now
-        </div>
+        <a href="#visit" class="font-mono text-xs text-[color:var(--muted)] underline decoration-dotted">
+          or see the showroom ↓
+        </a>
       </div>
     </div>
 
@@ -159,45 +129,29 @@
     </div>
   </section>
 
-  <!-- SEARCH & FILTERS -->
-  <section class="max-w-6xl mx-auto px-5" id="catalog">
-    <div class="glass p-5 rounded-2xl flex flex-col md:flex-row gap-4 items-center justify-between">
-      <div class="w-full md:w-1/2 relative">
-        <i class="fas fa-search absolute left-4 top-3.5 text-[color:var(--muted)]"></i>
-        <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Search shoes, sandals, belts..."
-               class="w-full pl-11 pr-4 py-2.5 rounded-full border border-white/10 text-sm focus:outline-none">
+  <!-- WHY WHATSAPP -->
+  <section class="max-w-6xl mx-auto px-5 pb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div class="info-card p-5">
+        <i class="fas fa-bolt mb-3" style="color:var(--blue)"></i>
+        <h3 class="font-display font-bold text-sm mb-1">Same-day answer</h3>
+        <p class="text-xs text-[color:var(--muted)]">Message us your size and style — we check the shop floor and reply the same day, not "call back later."</p>
       </div>
-      <div class="flex flex-wrap gap-2 justify-end w-full md:w-1/2" id="filter-buttons">
-        <button onclick="filterType('all', this)" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold font-mono">ALL</button>
-        <button onclick="filterType('GENTS', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold font-mono">MEN</button>
-        <button onclick="filterType('LADIES', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold font-mono">WOMEN</button>
-        <button onclick="filterType('KIDS', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold font-mono">KIDS</button>
+      <div class="info-card p-5">
+        <i class="fas fa-camera mb-3" style="color:var(--orange)"></i>
+        <h3 class="font-display font-bold text-sm mb-1">Real photos, real price</h3>
+        <p class="text-xs text-[color:var(--muted)]">You'll get an actual photo of the pair we have and the exact price — no catalog guesswork.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- CATALOG GRID -->
-  <section class="max-w-6xl mx-auto px-5 py-10">
-    <div class="mb-6 flex justify-between items-baseline flex-wrap gap-2">
-      <div>
-        <h2 class="font-display text-3xl font-bold">The Collection</h2>
-        <p class="eyebrow font-mono mt-1">REAL-TIME STOCK · NOT A CATALOG PHOTO</p>
+      <div class="info-card p-5">
+        <i class="fas fa-store mb-3" style="color:var(--blue)"></i>
+        <h3 class="font-display font-bold text-sm mb-1">Hold it for pickup</h3>
+        <p class="text-xs text-[color:var(--muted)]">Found your size? Ask us to hold it and walk in whenever suits you.</p>
       </div>
-      <div class="flex items-center gap-2">
-        <span id="product-count" class="font-mono text-xs glass px-3 py-1 rounded-full font-bold" style="color:var(--blue)">Processing Files...</span>
-        <button onclick="initializeCatalog()" title="Re-sync stock" class="font-mono text-xs glass px-3 py-1 rounded-full font-bold flex items-center gap-1.5" style="color:var(--orange)">
-          <i class="fas fa-rotate-right"></i> Refresh
-        </button>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="excel-catalog">
-      <p class="col-span-full text-center py-10 font-mono text-sm text-[color:var(--muted)]">Syncing stock data with official image mapping...</p>
     </div>
   </section>
 
   <!-- SHOWROOM GALLERY -->
-  <section class="max-w-6xl mx-auto px-5 py-12 border-t border-white/5">
+  <section id="visit" class="max-w-6xl mx-auto px-5 py-12 border-t border-white/5">
     <h2 class="font-display text-3xl font-bold mb-6">Inside the Showroom</h2>
     <div class="glass p-4 rounded-2xl">
       <div class="sk-ww-google-business-photo" data-embed-id="25696036"></div>
@@ -206,290 +160,8 @@
   </section>
 
   <footer class="max-w-6xl mx-auto px-5 py-8 text-center font-mono text-xs text-[color:var(--muted)]">
-    KHADIM RAGHUNATHPUR — sizes confirmed on WhatsApp, stock confirmed on the shop floor.
+    KHADIM RAGHUNATHPUR — message us on WhatsApp for sizes, prices, and stock.
   </footer>
 
-  <script>
-    // স্পেসের ঝামেলা এড়াতে আমরা সরাসরি অবজেক্ট কোড দিয়ে ডিরেক্ট পাথ করে দিলাম
-    const COMPANY_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/runing%20list%20%20april%20%202026.xlsx';
-    const STORE_FILE_URL = 'https://raw.githubusercontent.com/Khadim-raghunathpur/assets/main/physical%20stock%2009.07.2026.xlsx';
-
-    let allProducts = [];
-    let currentFilter = 'all';
-    const debugLog = [];
-
-    function log(msg) {
-      debugLog.push(msg);
-      console.log('[catalog]', msg);
-    }
-
-    // Turns "1,299", " 12 pcs", "", null, etc into a clean number instead of silently becoming 0/NaN.
-    function toNumber(val) {
-      if (val === null || val === undefined) return 0;
-      const cleaned = val.toString().replace(/[^0-9.\-]/g, '');
-      const n = parseFloat(cleaned);
-      return isNaN(n) ? 0 : n;
-    }
-
-    async function fetchExcelJson(url, label) {
-      let response;
-      try {
-        response = await fetch(url);
-      } catch (netErr) {
-        throw new Error(`${label}: network/CORS error reaching file — ${netErr.message}`);
-      }
-      if (!response.ok) {
-        const backupUrl = url.replace(/%20%20/g, '%20');
-        const backupResponse = await fetch(backupUrl).catch(() => null);
-        if (!backupResponse || !backupResponse.ok) {
-          throw new Error(`${label}: file returned HTTP ${response.status}. Check the filename/path on GitHub exactly matches (spaces, case, extension).`);
-        }
-        return processBuffer(await backupResponse.arrayBuffer());
-      }
-      return processBuffer(await response.arrayBuffer());
-    }
-
-    function processBuffer(arrayBuffer) {
-      const data = new Uint8Array(arrayBuffer);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const firstSheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[firstSheetName];
-      return XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    }
-
-    // Instead of trusting fixed column numbers (which breaks the moment someone
-    // inserts/removes a column in the sheet), find the header row and match
-    // columns by name. Falls back to the old fixed positions only if no header is found.
-    function detectColumns(rows) {
-      const wanted = {
-        itemCode: ['item code', 'itemcode', 'article code', 'sku', 'code'],
-        itemName: ['item name', 'itemname', 'description', 'particulars', 'name'],
-        stock: ['closing stock', 'stock qty', 'stock', 'quantity', 'qty', 'balance qty'],
-        mrp: ['mrp', 'rate', 'sale price', 'price', 'selling price']
-      };
-      for (let r = 0; r < Math.min(rows.length, 15); r++) {
-        const row = rows[r] || [];
-        const lower = row.map(c => (c || '').toString().trim().toLowerCase());
-        const found = {};
-        Object.keys(wanted).forEach(key => {
-          const idx = lower.findIndex(cell => wanted[key].some(w => cell === w || cell.includes(w)));
-          if (idx !== -1) found[key] = idx;
-        });
-        // Need at least itemCode + stock to trust this as the header row
-        if (found.itemCode !== undefined && found.stock !== undefined) {
-          found.headerRowIndex = r;
-          return found;
-        }
-      }
-      return null; // nothing matched — caller falls back to fixed positions
-    }
-
-    async function initializeCatalog() {
-      allProducts = [];
-      debugLog.length = 0;
-      document.getElementById('excel-catalog').innerHTML =
-        '<p class="col-span-full text-center py-10 font-mono text-sm text-[color:var(--muted)]">Syncing stock data with official image mapping...</p>';
-
-      let storeRows;
-      try {
-        storeRows = await fetchExcelJson(STORE_FILE_URL, 'Stock file');
-      } catch (error) {
-        console.error(error);
-        showFatalError(error.message);
-        return;
-      }
-
-      // The name-mapping file is a nice-to-have. If it fails, keep going with
-      // whatever item names are already in the stock file, instead of nuking the whole catalog.
-      let companyMap = {};
-      try {
-        const companyRows = await fetchExcelJson(COMPANY_FILE_URL, 'Name-mapping file');
-        companyRows.forEach(row => {
-          const item11 = row[0] ? row[0].toString().trim() : '';
-          const item7 = row[1] ? row[1].toString().trim() : '';
-          const mcName = row[3] ? row[3].toString().trim() : '';
-          if (item7) companyMap[item7] = mcName;
-          if (item11) companyMap[item11] = mcName;
-        });
-        log(`Name-mapping file: ${companyRows.length} rows loaded.`);
-      } catch (error) {
-        console.warn(error);
-        log(`Name-mapping file skipped (${error.message}). Falling back to in-sheet item names.`);
-      }
-
-      const cols = detectColumns(storeRows);
-      const useCol = cols || { itemCode: 2, itemName: 4, stock: 10, mrp: 14, headerRowIndex: -1 };
-      log(cols
-        ? `Header row detected at row ${cols.headerRowIndex + 1}. Columns: code=${cols.itemCode}, name=${cols.itemName}, stock=${cols.stock}, mrp=${cols.mrp}.`
-        : `No header row matched — using fallback fixed columns (code=2, name=4, stock=10, mrp=14). If stock still looks wrong, your sheet's column order differs from what this expects.`);
-
-      let lastParentGroup = 'KHADIMS';
-      let rowsRead = 0, rowsSkippedNoCode = 0, rowsSkippedZeroStock = 0, rowsKept = 0;
-      const byCode = {}; // aggregate duplicate codes (same shoe listed on multiple racks/rows)
-
-      storeRows.forEach((row, idx) => {
-        if (idx === useCol.headerRowIndex) return; // skip the header row itself
-        rowsRead++;
-
-        const currentGroup = row[1] ? row[1].toString().trim() : '';
-        const itemCode = useCol.itemCode !== undefined && row[useCol.itemCode] ? row[useCol.itemCode].toString().trim() : '';
-        const itemName = useCol.itemName !== undefined && row[useCol.itemName] ? row[useCol.itemName].toString().trim() : '';
-        const stockQty = toNumber(row[useCol.stock]);
-        const mrp = toNumber(row[useCol.mrp]);
-
-        if (currentGroup && !currentGroup.includes("Parent") && !currentGroup.includes("Item")) {
-          lastParentGroup = currentGroup;
-        }
-
-        if (!itemCode || itemCode.toLowerCase().includes("item code") || itemCode.includes("Sub Total")) {
-          rowsSkippedNoCode++;
-          return;
-        }
-        if (stockQty <= 0) {
-          rowsSkippedZeroStock++;
-          return;
-        }
-
-        let cleanCode = itemCode.replace(/[^0-9]/g, '');
-        let fullCode = cleanCode;
-        if (cleanCode.length > 7) cleanCode = cleanCode.substring(0, 7);
-        if (cleanCode.length < 5) { rowsSkippedNoCode++; return; }
-
-        const finalName = companyMap[cleanCode] || companyMap[fullCode] || itemName || 'Footwear Collection';
-
-        if (byCode[fullCode]) {
-          // Same article appears on more than one row/rack — combine instead of showing duplicate cards or dropping stock.
-          byCode[fullCode].stock += stockQty;
-        } else {
-          byCode[fullCode] = {
-            code: cleanCode,
-            fullCode: fullCode,
-            category: finalName,
-            group: lastParentGroup,
-            price: mrp ? mrp.toFixed(0) : '0',
-            stock: stockQty
-          };
-          rowsKept++;
-        }
-      });
-
-      allProducts = Object.values(byCode);
-      log(`Rows read: ${rowsRead}. Skipped (no valid code/header/subtotal): ${rowsSkippedNoCode}. Skipped (zero stock): ${rowsSkippedZeroStock}. Unique products kept: ${rowsKept}.`);
-
-      document.getElementById('live-stat').innerText = allProducts.reduce((sum, p) => sum + p.stock, 0);
-      renderCatalog(allProducts);
-      renderDiagnostics();
-    }
-
-    function showFatalError(message) {
-      document.getElementById('excel-catalog').innerHTML = `
-        <div class="col-span-full text-center py-10 font-mono text-sm" style="color:var(--orange)">
-          <p class="font-bold mb-2">Couldn't load the stock file.</p>
-          <p class="text-[color:var(--muted)] max-w-lg mx-auto">${message}</p>
-          <button onclick="initializeCatalog()" class="neon-btn text-[#0A0D14] px-4 py-2 rounded-full font-semibold text-xs mt-4">Try Again</button>
-        </div>`;
-      document.getElementById('product-count').innerText = 'Load failed';
-    }
-
-    function renderDiagnostics() {
-      let panel = document.getElementById('diagnostics-panel');
-      if (!panel) {
-        panel = document.createElement('div');
-        panel.id = 'diagnostics-panel';
-        panel.className = 'max-w-6xl mx-auto px-5 pb-10';
-        document.getElementById('excel-catalog').parentElement.after(panel);
-      }
-      panel.innerHTML = `
-        <details class="glass rounded-xl p-4 font-mono text-xs text-[color:var(--muted)]">
-          <summary class="cursor-pointer" style="color:var(--blue)">Sync diagnostics (tap to expand)</summary>
-          <ul class="mt-3 space-y-1 list-disc list-inside">
-            ${debugLog.map(l => `<li>${l}</li>`).join('')}
-          </ul>
-        </details>`;
-    }
-
-    function renderCatalog(products) {
-      const catalog = document.getElementById('excel-catalog');
-      const countLabel = document.getElementById('product-count');
-      catalog.innerHTML = '';
-
-      if (products.length === 0) {
-        catalog.innerHTML = '<p class="col-span-full text-center py-10 font-mono text-sm text-[color:var(--muted)]">No active products found in stock.</p>';
-        countLabel.innerText = '0 Items';
-        return;
-      }
-
-      countLabel.innerText = `${products.length} Items`;
-
-      products.forEach(p => {
-        const imgUrl = `https://khadims.com/images/products/${p.code}.jpg`;
-        const waText = encodeURIComponent(`Hello Khadim Raghunathpur! I want to check size availability for "${p.category}" (Article Code: ${p.fullCode}).`);
-        const lowStock = p.stock <= 3;
-
-        catalog.innerHTML += `
-          <div class="tag-card p-4 flex flex-col justify-between">
-            <div>
-              <div class="w-full h-44 bg-[#12161F] flex items-center justify-center rounded-lg overflow-hidden mb-3 border border-white/5 p-2">
-                <img src="${imgUrl}" alt="${p.category}" class="object-contain max-h-full max-w-full" onerror="this.src='https://picsum.photos/400/300?seed=${p.code}';">
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded" style="color:var(--blue); background:rgba(57,198,255,0.1);">${p.group}</span>
-                <span class="flex items-center gap-1.5 font-mono text-[10px] text-[color:var(--muted)]">
-                  <span class="stock-dot ${lowStock ? 'low' : ''}"></span> ${p.stock} in stock
-                </span>
-              </div>
-              <h3 class="font-display font-bold text-sm mt-2 leading-tight">${p.category}</h3>
-              <p class="text-xs font-mono mt-1 text-[color:var(--muted)]">Code: ${p.fullCode}</p>
-            </div>
-            <div class="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-white/10">
-              <span class="font-mono text-base font-bold" style="color:var(--orange)">₹${p.price}</span>
-              <a href="https://wa.me/916295777518?text=${waText}" target="_blank" class="neon-btn text-[#0A0D14] text-[10px] px-2.5 py-2 rounded-full flex items-center gap-1 font-semibold">
-                <i class="fab fa-whatsapp text-sm"></i> Sizes?
-              </a>
-            </div>
-          </div>
-        `;
-      });
-
-      attachTilt();
-    }
-
-    function attachTilt() {
-      document.querySelectorAll('.tag-card').forEach(card => {
-        card.addEventListener('mousemove', e => {
-          const r = card.getBoundingClientRect();
-          const x = (e.clientX - r.left) / r.width - 0.5;
-          const y = (e.clientY - r.top) / r.height - 0.5;
-          card.style.transform = `perspective(700px) rotateX(${(-y * 8).toFixed(2)}deg) rotateY(${(x * 8).toFixed(2)}deg) translateY(-4px)`;
-        });
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
-        });
-      });
-    }
-
-    function searchProducts() {
-      const searchVal = document.getElementById('search-input').value.toLowerCase();
-      const filtered = allProducts.filter(p => {
-        const matchesSearch = `${p.category} ${p.group} ${p.fullCode}`.toLowerCase().includes(searchVal);
-        let matchesFilter = false;
-        if (currentFilter === 'all') matchesFilter = true;
-        else if (currentFilter === 'GENTS') matchesFilter = p.group.toUpperCase().includes('GENTS') || p.group.toUpperCase().includes('MENS');
-        else if (currentFilter === 'LADIES') matchesFilter = p.group.toUpperCase().includes('LADIES') || p.group.toUpperCase().includes('WOMEN');
-        else if (currentFilter === 'KIDS') matchesFilter = p.group.toUpperCase().includes('BOYS') || p.group.toUpperCase().includes('KIDS') || p.group.toUpperCase().includes('GIRLS') || p.group.toUpperCase().includes('SCHOOL');
-        return matchesSearch && matchesFilter;
-      });
-      renderCatalog(filtered);
-    }
-
-    function filterType(type, btn) {
-      currentFilter = type;
-      document.querySelectorAll('#filter-buttons button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      searchProducts();
-    }
-
-    window.onload = initializeCatalog;
-  </script>
 </body>
 </html>
